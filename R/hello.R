@@ -20,3 +20,4 @@ hello <- function() {
 # test 2
 # test after deleting remote master branch
 # test with R terminal 3
+# test with Rstudio git
