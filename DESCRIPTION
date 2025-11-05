@@ -1,16 +1,32 @@
 Package: REDesignR
 Type: Package
-Title: What the Package Does (Title Case)
+Title: Restriction Enzyme digestion experiments simulator, optimizer, and visualizer
 Version: 0.1.0
 Authors@R: c(
     person(
-      "Jane", "Doe",
-      email = "jane@example.com",
+      "Christine", "Cheng",
+      email = "christineentse.cheng@mail.utoronto.ca",
       role = c("aut", "cre")
     )
   )
-Description: More about what it does (maybe more than one line).
-    Continuation lines should be indented.
-License: What license is it under?
+Description: The main purpose of the tool is to help scientists determine the 
+  best restriction enzyme(s) to use for their sequence digestion experiment. 
+  The tool will be an R package with a Shiny interface that simulates, optimizes
+  and visualizes restriction enzyme digestion experiments.The tool automates
+  optimal enzyme choice, provides intuitive visualization/interactive interfaces, 
+  and simulates multi-enzyme co-digestion experiments.
+License: MIT + file LICENSE
+Depends: R (>= 4.1.0)
 Encoding: UTF-8
 LazyData: true
+RoxygenNote: 7.3.3
+Roxygen: list(markdown = TRUE)
+Suggests: 
+    knitr,
+    rmarkdown
+VignetteBuilder: knitr
+Imports: 
+    assertthat,
+    Biostrings,
+    DECIPHER,
+    ggplot2

@@ -77,6 +77,9 @@ The author of the package is Christine Cheng. The author wrote…
 - R Core Team (2025). *R: A Language and Environment for Statistical
   Computing*. R Foundation for Statistical Computing, Vienna, Austria.
   <https://www.R-project.org/>.
+- Roberts, R.J., Vincze, T., Posfai, J., Macelis, D. REBASE-a database
+  for DNA restriction and modification: enzymes, genes and genomes.
+  Nucleic Acids Res. 43: D298-D299 (2015).
 
 ## Acknowledgements
 
@@ -91,6 +94,8 @@ This is a basic example which shows you how to solve a common problem:
 
 ``` r
 library(REDesignR)
+#> Warning: replacing previous import 'assertthat::has_name' by 'tibble::has_name'
+#> when loading 'REDesignR'
 ## basic example code
 ```
 

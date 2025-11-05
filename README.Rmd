@@ -79,6 +79,7 @@ The author of the package is Christine Cheng. The author wrote...
 ## References
 - R Core Team (2025). _R: A Language and Environment for Statistical Computing_. R
   Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+- Roberts, R.J., Vincze, T., Posfai, J., Macelis, D. REBASE-a database for DNA restriction and modification: enzymes, genes and genomes. Nucleic Acids Res. 43: D298-D299 (2015).
 
 ## Acknowledgements
 
