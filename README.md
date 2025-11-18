@@ -37,7 +37,7 @@ library("REDesignR")
 To run the shinyApp: TODO Under construction
 
 ``` r
-<!-- runREDesignR() -->
+# runREDesignR()
 ```
 
 ## Overview
