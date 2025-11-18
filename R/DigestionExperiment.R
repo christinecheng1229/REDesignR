@@ -42,7 +42,7 @@
 #' @import DECIPHER
 #' @import S4Vectors
 #' @import tibble
-simulateCoDigest <- function(DNA, enzymes) {
+simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their own dataset, otherwise use provided dataset as default
   # check for valid non-empty inputs
   assertthat::assert_that(not_empty(DNA), not_empty(enzymes))
 
@@ -70,7 +70,7 @@ simulateCoDigest <- function(DNA, enzymes) {
     fragLen <- diff(cutPositions) # Compute fragment lengths
 
     # Update results table
-    enzymeNames <- Enzymes$Name[2]
+    enzymeNames <- Enzymes$Name[2]  # TODO: 'Enzymes' should be 'enzymes' (input argument), right?
     # result$Enzymes = Enzymes$Name[2]
     # result$FragmentID <- seq_along(fragLen)
     # result$Start <- head(cutPositions, -1)
@@ -83,7 +83,7 @@ simulateCoDigest <- function(DNA, enzymes) {
     fragLen <- diff(cutPositions) # Compute fragment lengths
 
     # Update results table
-    enzymeNames <- Enzymes$Name[1]
+    enzymeNames <- Enzymes$Name[1] # TODO: 'Enzymes' should be 'enzymes' (input argument), right?
     # result$Enzymes = Enzymes$Name[1]
     # result$FragmentID <- seq_along(fragLen)
     # result$Start <- head(cutPositions, -1)

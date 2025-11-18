@@ -13,6 +13,7 @@
 #'  \item{Prototype}{Prototype of restriction enzyme.}
 #'  \item{RecognitionSeq}{Recognition sequence of restriction enzyme, including cleavage site.}
 #' }
+#'
 #' @examples
 #' \dontrun{
 #'  Enzymes

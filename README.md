@@ -59,9 +59,14 @@ browseVignettes("REDesignR")
 The package also contains a dataset, called ‘Enzymes’ that can be used
 as a source of restriction enzymes and their recognition sites.
 
+<!-- An overview of the package is illustrated below.-->
+
+<!-- ![](./inst/extdata/ExampleImage.png) -->
+
 ## Contributions
 
-The author of the package is Christine Cheng.
+The author of the package is Christine Cheng. TODO add dependant
+packages/functions, etc.
 
 ## References
 
