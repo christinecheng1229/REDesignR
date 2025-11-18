@@ -11,18 +11,18 @@ simulateCoDigest(DNA, enzymes)
 
 \item{enzymes}{A table of 2 restriction enzymes containing the following at minimum:
 \itemize {
-\item Name - Names of the restriction enzymes.
-\item RecognitionSeq - Recognition sequences of the corresponding restriction enzyme, including the cleavage site.
+\item Name A string indicating the name of the restriction enzymes.
+\item RecognitionSeq A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
 }}
 }
 \value{
-Returns a table of digestion results.
+Returns a dataframe of digestion results:
 \itemize{
-\item Enzyme - Name of the restriction enzyme used for digestion.
-\item FragmentID - A numeric value representing the order of resulting digested DNA fragments.
-\item Start - The starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
-\item End - The ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
-\item Length - The length of the resulting DNA fragment after digestion.
+\item Enzyme - A string indicating the name of the restriction enzyme used for digestion.
+\item FragmentID - An integer representing the order of resulting digested DNA fragments.
+\item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
+\item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
+\item Length - An integer representing the length of the resulting DNA fragment after digestion.
 }
 }
 \description{

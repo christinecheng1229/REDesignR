@@ -21,6 +21,10 @@ knitr::opts_chunk$set(
 ## Description
 The goal of REDesignR is to help scientists determine the best restriction enzyme(s) to use for their sequence digestion experiment. The tool will be an R package with a Shiny interface that simulates, optimizes and visualizes restriction enzyme digestion experiments. While web interfaces like REBASE (Roberts, 2015) exist to help with optimal restriction enzyme choice and packages like DECIPHER (Wright, 2024) can simulate the fragments that results from digesting a given sequence with the specified restriction enzyme, these existing tools lack in automating optimal enzyme choice, providing intuitive visualization/interactive interfaces, and simulating multi-enzyme co-digestion (using multiple restriction enzymes to digest a single sequence) experiments that many scientists choose to do. 'REDesignR' was developed using R version '4.5.1', platform 'x86_64-w64-mingw32/x64', and running under 'Windows 11 x64 (build 26100)'.
 
+TODO: expand on novelty e.g., 
+- Visualize digest results (and compatibility matrices) in one workflow.
+- certain R packages(REDseq) and web tools (RestrictionMapper) help visualize digests as restriction maps, however none/not many visualize results as agarose gel, which can help scientists validate their wet lab results with the simulation. This is a critical step in ensuring the digestion performed as expected and won't confound downstream experiments/results.
+
 ## Installation
 
 To install the latest version of the package:

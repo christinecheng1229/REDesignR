@@ -1,3 +1,8 @@
+# Purpose: Code and documentation for RE digestion simulation function(s).
+# Author: Christine Cheng
+# Date: November 18, 2025
+# Version: 1.1
+# Bugs and Issues:
 #' Simulates multi-restriction enzyme digestion
 #'
 #' A function that simulates a co-digestion experiment given a DNA sequence and the recognition sequences of 2 restriction enzymes.
@@ -5,17 +10,17 @@
 #' @param DNA A DNAString representing the DNA sequence to be digested in the simulation.
 #' @param enzymes  A table of 2 restriction enzymes containing the following at minimum:
 #' \itemize {
-#'  \item Name - Names of the restriction enzymes.
-#'  \item RecognitionSeq - Recognition sequences of the corresponding restriction enzyme, including the cleavage site.
+#'  \item Name A string indicating the name of the restriction enzymes.
+#'  \item RecognitionSeq A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
 #' }
 #'
-#' @return Returns a table of digestion results.
+#' @returns Returns a dataframe of digestion results:
 #' \itemize{
-#'   \item Enzyme - Name of the restriction enzyme used for digestion.
-#'   \item FragmentID - A numeric value representing the order of resulting digested DNA fragments.
-#'   \item Start - The starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
-#'   \item End - The ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
-#'   \item Length - The length of the resulting DNA fragment after digestion.
+#'   \item Enzyme - A string indicating the name of the restriction enzyme used for digestion.
+#'   \item FragmentID - An integer representing the order of resulting digested DNA fragments.
+#'   \item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
+#'   \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
+#'   \item Length - An integer representing the length of the resulting DNA fragment after digestion.
 #' }
 #'
 #' @examples
@@ -36,12 +41,12 @@
 #' Wickham H (2019). _assertthat: Easy Pre and Post Assertions_. doi:10.32614/CRAN.package.assertthat <https://doi.org/10.32614/CRAN.package.assertthat>, R package version 0.2.1, <https://CRAN.R-project.org/package=assertthat>.
 #' Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” _The R Journal_, *16*(2), 191-200.
 #'
-#' @export
 #' @import assertthat
 #' @import Biostrings
 #' @import DECIPHER
 #' @import S4Vectors
 #' @import tibble
+#' @export
 simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their own dataset, otherwise use provided dataset as default
   # check for valid non-empty inputs
   assertthat::assert_that(not_empty(DNA), not_empty(enzymes))
@@ -60,6 +65,8 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
                                       type = "positions",
                                       strand = "top")[[1]]$top
 
+  # TODO if No cut location(s) found in site:  GGATCC > how to recover
+
   if (S4Vectors::isEmpty(firstDigest) == TRUE & S4Vectors::isEmpty(secondDigest) == TRUE) {
     # Case: both enzymes don't digest given DNA sequence
     stop("No digestion site(s) found in sequence")
@@ -70,7 +77,7 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
     fragLen <- diff(cutPositions) # Compute fragment lengths
 
     # Update results table
-    enzymeNames <- Enzymes$Name[2]  # TODO: 'Enzymes' should be 'enzymes' (input argument), right?
+    enzymeNames <- enzymes$Name[2]  # TODO: 'Enzymes' should be 'enzymes' (input argument), right?
     # result$Enzymes = Enzymes$Name[2]
     # result$FragmentID <- seq_along(fragLen)
     # result$Start <- head(cutPositions, -1)
@@ -83,7 +90,7 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
     fragLen <- diff(cutPositions) # Compute fragment lengths
 
     # Update results table
-    enzymeNames <- Enzymes$Name[1] # TODO: 'Enzymes' should be 'enzymes' (input argument), right?
+    enzymeNames <- enzymes$Name[1] # TODO: 'Enzymes' should be 'enzymes' (input argument), right?
     # result$Enzymes = Enzymes$Name[1]
     # result$FragmentID <- seq_along(fragLen)
     # result$Start <- head(cutPositions, -1)

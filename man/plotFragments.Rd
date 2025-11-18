@@ -2,18 +2,36 @@
 % Please edit documentation in R/DigestVisualization.R
 \name{plotFragments}
 \alias{plotFragments}
-\title{Visualize distribution of digest fragments' characteristic(s)}
+\title{Visualize Restriction Enzyme co-digestion results}
 \usage{
 plotFragments(
   codigestDf,
   seq_length = NULL,
   show_lengths = TRUE,
-  gel_style = TRUE
+  gel_style = FALSE
 )
+}
+\arguments{
+\item{codigestDf}{A dataframe of codigestion results in the format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
+
+\item{seq_length}{An integer representing the length (# of nucleotides) in DNA sequence; inferred by the function if not provided.}
+
+\item{show_lengths}{A boolean dictating whether numerical fragment lengths are shown as overlay on the plot; TRUE by default.}
+
+\item{gel_style}{A boolean dictating how digested fragments are visualized; FALSE by default:
+\itemize {
+\item TRUE = simulated agarose gel (bands by decreasing fragment length) view
+\item FALSE = linear restriction map view
+}}
+}
+\value{
+A Plot of the results of a co-digestion experiment, either as an agarose gel or linear restriction map view and/or overlap of fragment lengths.
+
+TODO examples
 }
 \description{
 TODO description
 }
-\details{
-TODO examples
+\seealso{
+\code{\link[=simulateCoDigest]{simulateCoDigest()}}
 }

@@ -1,6 +1,8 @@
 # Purpose: Documentation for package dataset(s).
 # Author: Christine Cheng
 # Date: November 4, 2025
+# Version: 1.0
+# Bugs and Issues:
 #' Type 2 Restriction Enzymes Metadata
 #'
 #' Dataset of type 2 restriction enzymes from REABSE version 511 database from Oct 28 2025.

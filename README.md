@@ -24,6 +24,14 @@ sequence) experiments that many scientists choose to do. ‘REDesignR’ was
 developed using R version ‘4.5.1’, platform ‘x86_64-w64-mingw32/x64’,
 and running under ‘Windows 11 x64 (build 26100)’.
 
+TODO: expand on novelty e.g., - Visualize digest results (and
+compatibility matrices) in one workflow. - certain R packages(REDseq)
+and web tools (RestrictionMapper) help visualize digests as restriction
+maps, however none/not many visualize results as agarose gel, which can
+help scientists validate their wet lab results with the simulation. This
+is a critical step in ensuring the digestion performed as expected and
+won’t confound downstream experiments/results.
+
 ## Installation
 
 To install the latest version of the package:

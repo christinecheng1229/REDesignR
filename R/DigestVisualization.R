@@ -1,17 +1,31 @@
 # Purpose: Code and documentation for visualization function(s).
 # Author: Christine Cheng
-# Date: November 4, 2025
-#' Visualize distribution of digest fragments' characteristic(s)
+# Date: November 18, 2025
+# Version: 1.0
+# Bugs and Issues:
+#' Visualize Restriction Enzyme co-digestion results
 #'
 #' TODO description
 #'
+#' @param codigestDf A dataframe of codigestion results in the format outputted by [simulateCoDigest()].
+#' @param seq_length  An integer representing the length (# of nucleotides) in DNA sequence; inferred by the function if not provided.
+#' @param show_lengths A boolean dictating whether numerical fragment lengths are shown as overlay on the plot; TRUE by default.
+#' @param gel_style A boolean dictating how digested fragments are visualized; FALSE by default:
+#' \itemize {
+#'    \item TRUE = simulated agarose gel (bands by decreasing fragment length) view
+#'    \item FALSE = linear restriction map view
+#' }
+#'
+#' @returns A Plot of the results of a co-digestion experiment, either as an agarose gel or linear restriction map view and/or overlap of fragment lengths.
+#'
 #' TODO examples
 #'
+#' @seealso [simulateCoDigest()]
 #'
 #' @import ggplot2
 #' @import dplyr
 #' @export
-plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, gel_style = TRUE) {
+plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, gel_style = FALSE) {
   # TODO: check this code in entirety
 
   # Basic input checks
@@ -27,7 +41,7 @@ plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, ge
   # Prepare dataframe for plotting (shortest fragment at the top)
   codigestDf <- codigestDf %>%
     dplyr::mutate(
-      y_pos = max(FragmentID) - FragmentID + 1,
+      y_pos = max(FragmentID) - FragmentID + 1, # not needed if breaks on line #* can use FragmentID instead of y_pos
       midpoint = (Start + End) / 2
     ) %>%
     dplyr::arrange(Length)
@@ -37,7 +51,7 @@ plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, ge
     plot <- ggplot(codigestDf, aes(y = y_pos, x = Length)) +
       geom_tile(aes(width = Length / seq_length * 0.9, height = 0.8),
                 fill = "steelblue", alpha = 0.8, color = "black") +
-      scale_y_continuous(breaks = codigestDf$y_pos, labels = codigestDf$FragmentID) +
+      scale_y_continuous(breaks = codigestDf$FragmentID, labels = codigestDf$FragmentID) +  #*
       scale_x_continuous(expand = expansion(mult = c(0.05, 0.05))) +
       labs(
         title = paste("Simulated Co-Digestion Pattern:", codigestDf$Enzyme[1]),
@@ -70,6 +84,35 @@ plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, ge
   }
 
   return(plot)
+}
+
+#' Visualize distribution of digest fragments' characteristic(s)
+#'
+#' TODO description
+#'
+#' @param fragmentStats
+#'
+#' @returns
+#'
+#' TODO examples
+#'
+#' @seealso [simulateCoDigest()]
+#'
+#' @export
+plotFragmentStats <- function(fragmentStats) {
+  # idea: output a collection of mini plots that visualize all sorts of metadata
+  # about the fragments (e.g., length distribution, distribution between 2 enzymes' cuts, etc.)
+}
+
+#' TODO Helper function: title
+#'
+#' @param codigestDF A dataframe of co-digestion results outputted by [simulateCoDigest()]
+#'
+#' @returns A dataframe of co-digestion results' metadata/stats to be used by [plotFragmentStats()] and the Shiny app.
+getFragmentStats <- function(codigestDF) {
+  fragmentStats <- data.frame()
+  # include metadata of digestion to be plotted and simplier ones (e.g., average frag len) to be included in shiny app table
+  return(fragmentStats)
 }
 
 
