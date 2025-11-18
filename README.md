@@ -34,14 +34,20 @@ devtools::install github("christinecheng1229/REDesignR",build vignettes = TRUE)
 library("REDesignR")
 ```
 
-To run the shinyApp: Under construction
+To run the shinyApp: TODO Under construction
+
+``` r
+<!-- runREDesignR() -->
+```
 
 ## Overview
 
+TODO ls() doesn’t work as expected below
+
 ``` r
-ls("package:REDesignR")
-data(package = "REDesignR") # optional
-browseVignettes("REDesignR")
+ls("package:REDesignR") # View package functions and datasets
+data(package = "REDesignR") # View package dataset(s)
+browseVignettes("REDesignR")  # View package vignette(s)
 ```
 
 `REDesignR` contains 3 functions.
@@ -65,8 +71,9 @@ as a source of restriction enzymes and their recognition sites.
 
 ## Contributions
 
-The author of the package is Christine Cheng. TODO add dependant
-packages/functions, etc.
+The author of the package is Christine Cheng. TODO Outline contributions
+from other packages/sources for each function, etc. Remember your
+individual contributions to the package are (also) important.
 
 ## References
 
@@ -103,3 +110,7 @@ This package was developed as part of an assessment for 2025 BCB410H:
 Applied Bioinformatics course at the University of Toronto, Toronto,
 CANADA. REDesignR welcomes issues, enhancement requests, and other
 contributions. To submit an issue,use the GitHub issues.
+
+<!-- ## Package Tree Structure -->
+
+<!-- TODO -->

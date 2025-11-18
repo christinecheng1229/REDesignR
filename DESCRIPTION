@@ -27,8 +27,11 @@ Suggests:
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: 
-    assertthat,
     Biostrings,
     DECIPHER,
-    ggplot2
+    S4Vectors,
+    assertthat,
+    dplyr,
+    ggplot2,
+    tibble
 Config/testthat/edition: 3
