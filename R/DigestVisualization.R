@@ -29,8 +29,12 @@ plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, ge
   # TODO: check this code in entirety
 
   # Basic input checks
-  if (missing(codigestDf) || !"FragmentID" %in% names(codigestDf)) {
-    stop("Please provide a valid codigestion dataframe (output of simulateCoDigest()).")
+  if (!"Enzymes" %in% names(codigestDf) ||
+      !"FragmentID" %in% names(codigestDf) ||
+      !"Start" %in% names(codigestDf) ||
+      !"End" %in% names(codigestDf) ||
+      !"Length" %in% names(codigestDf)) {
+    stop("Please provide a valid codigestion dataframe (refer to sample output of simulateCoDigest()).")
   }
 
   # Infer sequence length if not provided
@@ -38,46 +42,54 @@ plotFragments <- function(codigestDf, seq_length = NULL, show_lengths = TRUE, ge
     seq_length <- max(codigestDf$End)
   }
 
-  # Prepare dataframe for plotting (shortest fragment at the top)
+  # Prepare dataframe for plotting (in descending fragment length)
   codigestDf <- codigestDf %>%
     dplyr::mutate(
-      y_pos = max(FragmentID) - FragmentID + 1, # not needed if breaks on line #* can use FragmentID instead of y_pos
+      y_pos = max(FragmentID) - FragmentID + 1, # TODO not needed if breaks on lines #* can use FragmentID instead of y_pos
       midpoint = (Start + End) / 2
     ) %>%
-    dplyr::arrange(Length)
+    dplyr::arrange(dplyr::desc(Length))
 
   if (gel_style) {
-    # Simulated gel view (bands proportional to fragment length)
-    plot <- ggplot(codigestDf, aes(y = y_pos, x = Length)) +
-      geom_tile(aes(width = Length / seq_length * 0.9, height = 0.8),
-                fill = "steelblue", alpha = 0.8, color = "black") +
-      scale_y_continuous(breaks = codigestDf$FragmentID, labels = codigestDf$FragmentID) +  #*
-      scale_x_continuous(expand = expansion(mult = c(0.05, 0.05))) +
-      labs(
-        title = paste("Simulated Co-Digestion Pattern:", codigestDf$Enzyme[1]),
+    # Simulated agarose gel view (bands proportional to fragment length)
+    plot <- ggplot2::ggplot(codigestDf, aes(y = FragmentID, x = Length)) + #*
+      ggplot2::geom_tile(aes(width = Length / seq_length * 0.9, height = 0.8),
+                         fill = "steelblue",
+                         alpha = 0.8,
+                         color = "black") +
+      ggplot2::scale_y_continuous(breaks = codigestDf$FragmentID, #*
+                                  labels = codigestDf$FragmentID) +  #*
+      # ggplot2::scale_x_continuous(expand = expansion(mult = c(0.05, 0.05))) +
+      ggplot2::labs(
+        title = paste("Simulated Co-Digestion Pattern:", codigestDf$Enzymes[1]), # TODO
         x = "Fragment length (bp)",
         y = "Fragment ID"
       ) +
-      theme_minimal(base_size = 13)
+      ggplot2::theme_minimal(base_size = 13)
 
     if (show_lengths) {
-      plot <- plot + geom_text(aes(label = Length), color = "white", size = 4, vjust = 0.4)
+      # add fragment size overlay labels
+      plot <- plot + ggplot2::geom_text(aes(label = Length),
+                                        color = "white",
+                                        size = 4,
+                                        vjust = 0.4)
     }
   } else {
     # Linear map view (genomic order along the sequence)
-    plot <- ggplot(codigestDf, aes(xmin = Start, xmax = End, ymin = 0, ymax = 1)) +
-      geom_rect(fill = "steelblue", color = "black", alpha = 0.8) +
-      labs(
-        title = paste("Restriction Fragment Map:", codigestDf$Enzyme[1]),
+    plot <- ggplot2::ggplot(codigestDf, aes(xmin = Start, xmax = End, ymin = 0, ymax = 1)) +
+      ggplot2::geom_rect(fill = "steelblue", color = "black", alpha = 0.8) +
+      ggplot2::labs(
+        title = paste("Restriction Fragment Map:", codigestDf$Enzymes[1]), # TODO
         x = "Sequence position (bp)",
         y = NULL
       ) +
-      theme_minimal(base_size = 13) +
-      theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
+      ggplot2::theme_minimal(base_size = 13) +
+      ggplot2::theme(axis.text.y = element_blank(), axis.ticks.y = element_blank())
 
     if (show_lengths) {
-      plot <- plot + geom_text(
-        aes(x = (Start + End) / 2, y = 0.5, label = paste0(Length, " bp")),
+      # add fragment size overlay labels
+      plot <- plot + ggplot2::geom_text(
+        aes(x = midpoint, y = 0.5, label = paste0(Length, " bp")),
         color = "white", size = 3
       )
     }

@@ -18,7 +18,7 @@ simulateCoDigest(DNA, enzymes)
 \value{
 Returns a dataframe of digestion results:
 \itemize{
-\item Enzyme - A string indicating the name of the restriction enzyme used for digestion.
+\item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 \item FragmentID - An integer representing the order of resulting digested DNA fragments.
 \item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
 \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
