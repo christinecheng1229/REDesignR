@@ -29,8 +29,6 @@ VignetteBuilder: knitr
 Imports: 
     Biostrings,
     DECIPHER,
-    S4Vectors,
-    assertthat,
     dplyr,
     ggplot2,
     tibble,

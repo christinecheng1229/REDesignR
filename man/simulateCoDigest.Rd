@@ -4,19 +4,19 @@
 \alias{simulateCoDigest}
 \title{Simulates multi-restriction enzyme digestion}
 \usage{
-simulateCoDigest(DNA, enzymes)
+simulateCoDigest(dnaSeq, enzymes)
 }
 \arguments{
-\item{DNA}{A DNAString representing the DNA sequence to be digested in the simulation.}
+\item{dnaSeq}{A DNAString representing the DNA sequence to be digested in the simulation.}
 
 \item{enzymes}{A table of 2 restriction enzymes containing the following at minimum:
-\itemize {
-\item Name A string indicating the name of the restriction enzymes.
-\item RecognitionSeq A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
+\itemize{
+\item Name - A string indicating the name of the restriction enzymes.
+\item RecognitionSeq - A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
 }}
 }
 \value{
-Returns a dataframe of digestion results if successful:
+Returns \code{invisible(NULL)} and a message if no digestion sites are found. Otherwise, returns a tibble of fragments with columns:
 \itemize{
 \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 \item FragmentID - An integer representing the order of resulting digested DNA fragments.
@@ -24,8 +24,6 @@ Returns a dataframe of digestion results if successful:
 \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
 \item Length - An integer representing the length of the resulting DNA fragment after digestion.
 }
-
-otherwise informs user of unsuccessful digestion.
 }
 \description{
 A function that simulates a co-digestion experiment given a DNA sequence and the recognition sequences of 2 restriction enzymes.
@@ -45,7 +43,6 @@ simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
 \references{
 Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}. doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble}, R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
 Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). \emph{Biostrings: Efficient manipulation of biological strings}. doi:10.18129/B9.bioc.Biostrings \url{https://doi.org/10.18129/B9.bioc.Biostrings}, R package version 2.78.0, \url{https://bioconductor.org/packages/Biostrings}.
-Pagès H, Lawrence M, Aboyoun P (2025). \emph{S4Vectors: Foundation of vector-like and list-like containers in Bioconductor}. doi:10.18129/B9.bioc.S4Vectors \url{https://doi.org/10.18129/B9.bioc.S4Vectors}, R package version 0.48.0, \url{https://bioconductor.org/packages/S4Vectors}.
 Wickham H (2019). \emph{assertthat: Easy Pre and Post Assertions}. doi:10.32614/CRAN.package.assertthat \url{https://doi.org/10.32614/CRAN.package.assertthat}, R package version 0.2.1, \url{https://CRAN.R-project.org/package=assertthat}.
 Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” \emph{The R Journal}, \emph{16}(2), 191-200.
 }

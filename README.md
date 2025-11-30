@@ -79,9 +79,12 @@ as a source of restriction enzymes and their recognition sites.
 
 ## Contributions
 
-The author of the package is Christine Cheng. TODO Outline contributions
-from other packages/sources for each function, etc. Remember your
-individual contributions to the package are (also) important.
+The author of the package is Christine Cheng. OpenAI ChatGPT-5.1 Auto
+model was used during the package development process to aid in
+maintaining consistent formatting across R sripts, identifying gaps in
+unit test coverage, TODO. TODO Outline contributions from other
+packages/sources for each function, etc. Remember your individual
+contributions to the package are (also) important.
 
 ## References
 

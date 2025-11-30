@@ -62,7 +62,9 @@ The package also contains a dataset, called 'Enzymes' that can be used as a sour
 
 ## Contributions
 
-The author of the package is Christine Cheng. TODO Outline contributions from other packages/sources for each function, etc. Remember your individual contributions to the package are (also) important.
+The author of the package is Christine Cheng.
+OpenAI ChatGPT-5.1 Auto model was used during the package development process to aid in maintaining consistent formatting across R sripts, identifying gaps in unit test coverage, TODO.
+TODO Outline contributions from other packages/sources for each function, etc. Remember your individual contributions to the package are (also) important.
 
 ## References
 - Müller K, Wickham H (2025). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
