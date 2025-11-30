@@ -16,7 +16,7 @@ simulateCoDigest(DNA, enzymes)
 }}
 }
 \value{
-Returns a dataframe of digestion results:
+Returns a dataframe of digestion results if successful:
 \itemize{
 \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 \item FragmentID - An integer representing the order of resulting digested DNA fragments.
@@ -24,6 +24,8 @@ Returns a dataframe of digestion results:
 \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
 \item Length - An integer representing the length of the resulting DNA fragment after digestion.
 }
+
+otherwise informs user of unsuccessful digestion.
 }
 \description{
 A function that simulates a co-digestion experiment given a DNA sequence and the recognition sequences of 2 restriction enzymes.
@@ -33,11 +35,11 @@ A function that simulates a co-digestion experiment given a DNA sequence and the
 
 # Example 1:
 # Simulate co-digestion with RE AaaI and AagI.
-simulateCoDigest(DNAString("CGGCCGATCGATCGGCCG"), Enzymes[c(1,4),])
+simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), Enzymes[c(1,4),])
 
 # Example 2:
-# Simulate digestion whne no clevage sites are found.
-simulateCoDigest(DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
+# Simulate digestion when no cleavage sites are found.
+simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
 
 }
 \references{

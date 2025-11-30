@@ -2,7 +2,7 @@
 # Author: Christine Cheng
 # Date: November 18, 2025
 # Version: 1.0
-# Bugs and Issues:
+# Bugs and Issues: None known.
 #' Visualize Restriction Enzyme co-digestion results
 #'
 #' TODO description

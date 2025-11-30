@@ -15,8 +15,7 @@
 #' Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
 #'
 #' @export
-#' @importFrom shiny runApp
-
+#' @import shiny
 runREDesignR <- function() {
   appDir <- system.file("shiny-scripts",
                         package = "REDesignR")

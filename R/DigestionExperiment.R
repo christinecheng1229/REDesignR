@@ -1,8 +1,8 @@
 # Purpose: Code and documentation for RE digestion simulation function(s).
 # Author: Christine Cheng
-# Date: November 18, 2025
+# Date: November 30, 2025
 # Version: 1.1
-# Bugs and Issues:
+# Bugs and Issues: None known.
 #' Simulates multi-restriction enzyme digestion
 #'
 #' A function that simulates a co-digestion experiment given a DNA sequence and the recognition sequences of 2 restriction enzymes.
@@ -14,7 +14,7 @@
 #'  \item RecognitionSeq A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
 #' }
 #'
-#' @returns Returns a dataframe of digestion results:
+#' @returns Returns a dataframe of digestion results if successful:
 #' \itemize{
 #'   \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 #'   \item FragmentID - An integer representing the order of resulting digested DNA fragments.
@@ -22,17 +22,18 @@
 #'   \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
 #'   \item Length - An integer representing the length of the resulting DNA fragment after digestion.
 #' }
+#' @returns otherwise informs user of unsuccessful digestion.
 #'
 #' @examples
 #' # Using restriction enzymes available with package.
 #'
 #' # Example 1:
 #' # Simulate co-digestion with RE AaaI and AagI.
-#' simulateCoDigest(DNAString("CGGCCGATCGATCGGCCG"), Enzymes[c(1,4),])
+#' simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), Enzymes[c(1,4),])
 #'
 #' # Example 2:
-#' # Simulate digestion whne no clevage sites are found.
-#' simulateCoDigest(DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
+#' # Simulate digestion when no cleavage sites are found.
+#' simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
 #'
 #' @references
 #' Müller K, Wickham H (2025). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
@@ -56,21 +57,17 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
   sequenceLen <- length(DNA)
 
   # Run the digestion experiments using the two enzymes
-  firstDigest <- DECIPHER::DigestDNA(myDNAStringSet = seqSet,
-                                  sites = enzymes[1, ]$RecognitionSeq,
-                                  type = "positions",
-                                  strand = "top")[[1]]$top
-  secondDigest <- DECIPHER::DigestDNA(myDNAStringSet = seqSet,
-                                      sites = enzymes[2, ]$RecognitionSeq,
-                                      type = "positions",
-                                      strand = "top")[[1]]$top
+  firstDigest <- safeDigest(seqSet, enzymes[1, ]$RecognitionSeq)
+  secondDigest <- safeDigest(seqSet, enzymes[2, ]$RecognitionSeq)
 
-  # TODO if No cut location(s) found in site:  GGATCC > how to recover
+  if (length(firstDigest) == 0 && length(secondDigest) == 0) {
 
-  if (S4Vectors::isEmpty(firstDigest) == TRUE & S4Vectors::isEmpty(secondDigest) == TRUE) {
     # Case: both enzymes don't digest given DNA sequence
-    stop("No digestion site(s) found in sequence")
+    message("No digestion site(s) found in sequence")
+    return(invisible(NULL)) # to stop function execution & prevent returning 'NULL' to user
+
   } else if (S4Vectors::isEmpty(firstDigest) == TRUE) {  # Case: only second enzyme digests
+
     # Add sequence boundaries
     cutPositions <- unique(c(1L, secondDigest, sequenceLen))
     cutPositions <- sort(cutPositions)
@@ -83,7 +80,9 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
     # result$Start <- head(cutPositions, -1)
     # result$End <- tail(cutPositions, -1)
     # result$Length <- fragLen
+
   } else if (S4Vectors::isEmpty(secondDigest) == TRUE) { # Case: only first enzyme digests
+
     # Add sequence boundaries
     cutPositions <- unique(c(1L, firstDigest, sequenceLen))
     cutPositions <- sort(cutPositions)
@@ -96,7 +95,9 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
     # result$Start <- head(cutPositions, -1)
     # result$End <- tail(cutPositions, -1)
     # result$Length <- fragLen
+
   } else {  # Case: both enzymes digest
+
     cutPositions <- sort(c(firstDigest, secondDigest)) # order digested positions
 
     # Add sequence boundaries
@@ -110,6 +111,7 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
     # result$Start <- head(cutPositions, -1)
     # result$End <- tail(cutPositions, -1)
     # result$Length <- fragLen
+
   }
   result <- tibble::tibble(Enzymes = enzymeNames,
                            FragmentID = seq_along(fragLen),
@@ -117,6 +119,36 @@ simulateCoDigest <- function(DNA, enzymes) {  # TODO: allow user to input their 
                            End = tail(cutPositions, -1) - 1,
                            Length = fragLen)
   return(result)
+}
+
+#' Helper function of simulateCoDigest to handle errors thrown by DECIPHER::DigestDNA
+#' @keywords internal
+safeDigest <- function(dnaSeq, recognitionSite) {
+
+  tryCatch(
+    {
+      DECIPHER::DigestDNA(
+        myDNAStringSet = dnaSeq,
+        sites = recognitionSite,
+        type = "positions",
+        strand = "top"
+      )[[1]]$top
+    },
+
+    error = function(e) {
+      if (grepl("No cut location\\(s\\) found in site:", conditionMessage(e))) {
+
+        # Specific handling for NO CUT SITE error: return no cut site result so
+        # that safeDigest always returns an integer vector for cleaner
+        # downstream processing
+        return(integer(0))
+
+      } else {
+        # Re-throw unexpected errors
+        stop(e)
+      }
+    }
+  )
 }
 
 # [END]
