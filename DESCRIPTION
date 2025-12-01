@@ -1,12 +1,9 @@
 Type: Package
 Package: REDesignR
-Title: Restriction Enzyme digestion experiments simulator, optimizer, and
-    visualizer
+Title: Simulate and Optimize Restriction Enzyme Digestion Experiments
 Version: 0.1.1
 Authors@R: 
-    person("Christine",
-    "Cheng",
-    "christineentse.cheng@mail.utoronto.ca",
+    person("Christine", "Cheng", , "christineentse.cheng@mail.utoronto.ca",
     role = c("aut", "cre"))
 Description: The main purpose of the tool is to help scientists determine
     the best restriction enzyme(s) to use for their sequence digestion
@@ -16,6 +13,8 @@ Description: The main purpose of the tool is to help scientists determine
     intuitive visualization/interactive interfaces, and simulates
     multi-enzyme co-digestion experiments.
 License: MIT + file LICENSE
+URL: https://github.com/christinecheng1229/REDesignR
+BugReports: https://github.com/christinecheng1229/REDesignR/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -23,6 +22,8 @@ Imports:
     DECIPHER,
     dplyr,
     ggplot2,
+    patchwork,
+    scales,
     shiny,
     tibble
 Suggests: 

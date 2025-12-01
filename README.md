@@ -68,10 +68,13 @@ browseVignettes("REDesignR")  # View package vignette(s)
 1.  ***simulateCoDigest*** for simulating a co-digestion experiment and
     producing a table of resulting digests.
 
-2.  ***plotFragments*** for visualizing the distribution of fragment
-    sizes after a digestion.
+2.  ***plotRestrictionMap*** for visualizing the digestion results via
+    restriction map.
 
-3.  ***optimalRE*** for determining the optimal combination of
+3.  ***simulateGel*** for visualizing the digestion results via an
+    agarose gel.
+
+4.  ***optimalRE*** for determining the optimal combination of
     restriction enzyme to use for digestion, based on experimental
     environments and desired average fragment length.
 
@@ -109,6 +112,8 @@ package are (also) important.
   <doi:10.18129/B9.bioc.S4Vectors>
   <https://doi.org/10.18129/B9.bioc.S4Vectors>, R package version
   0.48.0, <https://bioconductor.org/packages/S4Vectors>.
+- Pedersen T (2025). *patchwork: The Composer of Plots.* R package
+  version 1.3.2.9000, <https://patchwork.data-imaginist.com>.
 - R Core Team (2025). *R: A Language and Environment for Statistical
   Computing*. R Foundation for Statistical Computing, Vienna, Austria.
   <https://www.R-project.org/>.
@@ -119,6 +124,8 @@ package are (also) important.
   <doi:10.32614/CRAN.package.assertthat>
   <https://doi.org/10.32614/CRAN.package.assertthat>, R package version
   0.2.1, <https://CRAN.R-project.org/package=assertthat>.
+- Wickham H, Pedersen T, Seidel D (2025). *scales: Scale Functions for
+  Visualization.* R package version 1.4.0, <https://scales.r-lib.org>.
 - Wright ES (2024). “Fast and Flexible Search for Homologous Biological
   Sequences with DECIPHER v3.” *The R Journal*, *16*(2), 191-200.
 

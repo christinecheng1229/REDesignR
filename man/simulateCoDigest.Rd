@@ -16,13 +16,17 @@ simulateCoDigest(dnaSeq, enzymes)
 }}
 }
 \value{
-Returns \code{invisible(NULL)} and a message if no digestion sites are found. Otherwise, returns a \code{\link[tibble:tibble]{tibble::tibble()}} of fragments with columns:
+Returns \code{invisible(NULL)} and a message if no digestion sites are found. Otherwise, returns a list of:
+\itemize{
+\item digestDf - A \code{\link[tibble:tibble]{tibble::tibble()}} of fragments with columns:
 \itemize{
 \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 \item FragmentID - An integer representing the order of resulting digested DNA fragments.
 \item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
 \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
 \item Length - An integer representing the length of the resulting DNA fragment after digestion.
+}
+\item isCoDigest - A boolean indicating whether \code{digestDf} contains fragments from a single-enzymge digestion (\code{FALSE}) or a co-digestion (\code{TRUE}).
 }
 }
 \description{

@@ -14,13 +14,17 @@
 #'   - Name - A string indicating the name of the restriction enzymes.
 #'   - RecognitionSeq - A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
 #'
-#' @returns Returns `invisible(NULL)` and a message if no digestion sites are found. Otherwise, returns a [tibble()] of fragments with columns:
+#' @returns Returns `invisible(NULL)` and a message if no digestion sites are found. Otherwise, returns a list of:
 #' \itemize{
-#'   \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
-#'   \item FragmentID - An integer representing the order of resulting digested DNA fragments.
-#'   \item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
-#'   \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
-#'   \item Length - An integer representing the length of the resulting DNA fragment after digestion.
+#'    \item digestDf - A [tibble()] of fragments with columns:
+#'    \itemize{
+#'      \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
+#'      \item FragmentID - An integer representing the order of resulting digested DNA fragments.
+#'      \item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
+#'      \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
+#'      \item Length - An integer representing the length of the resulting DNA fragment after digestion.
+#'    }
+#'    \item isCoDigest - A boolean indicating whether `digestDf` contains fragments from a single-enzymge digestion (`FALSE`) or a co-digestion (`TRUE`).
 #' }
 #'
 #' @examples
@@ -95,7 +99,7 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
 
     # Case: both enzymes don't digest given DNA sequence
     message("No digestion site(s) found in sequence")
-    return(invisible(NULL)) # to stop function execution & prevent returning 'NULL' to user
+    return(invisible(NULL)) # to stop function execution & prevent displaying 'NULL' to user
   }
 
   # ------------------------ Successful digestion cases ----------------------------
@@ -105,7 +109,9 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
   if (length(firstDigest) == 0) {
 
     # Case: only second enzyme digests
-    result <- buildDigestDf(
+    isCoDigest = FALSE
+
+    digestDf <- buildDigestDf(
       fragments = secondDigest,
       enzymeName = enzymes$Name[2],
       sequenceLen = sequenceLen
@@ -114,7 +120,9 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
   } else if (length(secondDigest) == 0) {
 
     # Case: only first enzyme digests
-    result <- buildDigestDf(
+    isCoDigest = FALSE
+
+    digestDf <- buildDigestDf(
       fragments = firstDigest,
       enzymeName = enzymes$Name[1],
       sequenceLen = sequenceLen
@@ -123,15 +131,23 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
   } else {
 
     # Case: both enzymes digest
+    isCoDigest = TRUE
+
     mergedCuts <- sort(c(firstDigest, secondDigest)) # order digested positions
 
-    result <- buildDigestDf(
+    digestDf <- buildDigestDf(
       fragments = mergedCuts,
       enzymeName = paste(enzymes$Name, collapse = " + "),
       sequenceLen = sequenceLen
     )
 
   }
+
+  # return digestion dataframe with indication of single- or co-digestion
+  result <- list(
+    digestDf = digestDf,
+    isCoDigest = isCoDigest
+  )
 
   return(result)
 

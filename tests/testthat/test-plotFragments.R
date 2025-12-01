@@ -5,7 +5,8 @@
 # Bugs and Issues: None known.
 
 test_that("Input validation: codigestDf format must be as documented", {
-  testDigestDF <- simulateCoDigest(DNAString("ATCGATGGATCCATCGATATCGATGGATCC"), Enzymes[c(4, 27),])
+  testDigestDF <- simulateCoDigest(DNAString("ATCGATGGATCCATCGATATCGATGGATCC"),
+                                   Enzymes[c(4, 27),])
   testthat::expect_error(REDesignR::plotFragments(t(testDigestDF)))
 })
 
