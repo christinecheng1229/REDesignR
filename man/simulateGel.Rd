@@ -7,7 +7,7 @@
 simulateGel(codigestDf, multiDigest = TRUE, labelFragments = FALSE)
 }
 \arguments{
-\item{codigestDf}{A dataframe of codigestion results in the format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
+\item{codigestDf}{A tibble or data frame of co-digestion results in the format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
 
 \item{multiDigest}{A boolean indicating whether \code{codigestDf} resulted from a single-digest (\code{FALSE}) or a co-digest (\code{TRUE}), the latter being the default.}
 
@@ -22,30 +22,6 @@ TODO description
 \examples{
 \dontrun{
 TODO
-data(Enzymes, package = "REDesignR")  # load data
-# Simulate co-digestion with RE AaaI and AagI.
-TODO
-coDigestDf <- simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), REDesignR::Enzymes[c(1,4),])
-
-# Example 1: ---------------------------------------------------------------
-simulateGel(coDigestDf) # by default: multiDigest = TRUE, labelFragments = FALSE
-
-# Example 2: ---------------------------------------------------------------
-simulateGel(coDigestDf, labelFragments = TRUE)  # by default: multiDigest = TRUE
-
-# Example 3: ---------------------------------------------------------------
-# Simulate single-digestion with TODO
-TODO
-digestDF <- TODO
-simulateGel(digestDF, multiDigest = FALSE)  # by default: labelFragments = FALSE
-# > REDesignR::simulateGel(testDigestDF)
-# > REDesignR::simulateGel(testDigestDF, multiDigest = TRUE)
-# > REDesignR::simulateGel(testDigestDF, labelFragments = TRUE)
-# > REDesignR::simulateGel(testDigestDF2)
-# > REDesignR::simulateGel(testDigestDF2, multiDigest = FALSE)
-# > REDesignR::simulateGel(testDigestDF2)
-# > REDesignR::simulateGel(testDigestDF2, multiDigest = FALSE)
-# > REDesignR::simulateGel(testDigestDF2, multiDigest = FALSE, TRUE)
 }
 
 }

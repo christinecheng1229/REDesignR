@@ -55,8 +55,6 @@ runREDesignR()
 
 ## Overview
 
-TODO ls() doesn’t work as expected below
-
 ``` r
 ls("package:REDesignR") # View package functions and datasets
 data(package = "REDesignR") # View package dataset(s)
@@ -120,10 +118,6 @@ package are (also) important.
 - Roberts, R.J., Vincze, T., Posfai, J., Macelis, D. REBASE-a database
   for DNA restriction and modification: enzymes, genes and genomes.
   Nucleic Acids Res. 43: D298-D299 (2015).
-- Wickham H (2019). *assertthat: Easy Pre and Post Assertions*.
-  <doi:10.32614/CRAN.package.assertthat>
-  <https://doi.org/10.32614/CRAN.package.assertthat>, R package version
-  0.2.1, <https://CRAN.R-project.org/package=assertthat>.
 - Wickham H, Pedersen T, Seidel D (2025). *scales: Scale Functions for
   Visualization.* R package version 1.4.0, <https://scales.r-lib.org>.
 - Wright ES (2024). “Fast and Flexible Search for Homologous Biological

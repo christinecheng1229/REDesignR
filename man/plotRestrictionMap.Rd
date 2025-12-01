@@ -4,23 +4,28 @@
 \alias{plotRestrictionMap}
 \title{Visualize Restriction Enzyme co-digestion results}
 \usage{
-plotRestrictionMap(codigestDf, showLengths)
+plotRestrictionMap(codigestDf, multiDigest = TRUE, showLengths = TRUE)
 }
 \arguments{
-\item{codigestDf}{A dataframe of codigestion results in the format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
+\item{codigestDf}{A tibble or data frame of co-digestion results in the format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
 
-\item{show_lengths}{A boolean dictating whether numerical fragment lengths are shown as overlay on the plot; TRUE by default.}
+\item{multiDigest}{A boolean indicating whether \code{codigestDf} resulted from a single-digest (\code{FALSE}) or a co-digest (\code{TRUE}), the latter being the default.}
+
+\item{showLengths}{A boolean dictating whether numerical fragment lengths are shown as overlay on the plot; TRUE by default.}
 }
 \value{
-A Plot of the results of a co-digestion experiment, either as an agarose gel or linear restriction map view and/or overlap of fragment lengths.
+A plot of the results of a co-digestion experiment, either as an agarose gel or linear restriction map view and/or overlap of fragment lengths.
 
-TODO examples
+TODO: examples
 }
 \description{
 TODO description
 }
 \references{
+Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}. doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble}, R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
 Pedersen T (2025). \emph{patchwork: The Composer of Plots.} R package version 1.3.2.9000, https://patchwork.data-imaginist.com.
+Wickham, H. (2016). \emph{ggplot2: Elegant Graphics for Data Analysis.} Springer-Verlag New York. ISBN: 978-3-319-24277-4.
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). \emph{dplyr: A Grammar of Data Manipulation}. doi:10.32614/CRAN.package.dplyr \url{https://doi.org/10.32614/CRAN.package.dplyr}, R package version 1.1.4, \url{https://CRAN.R-project.org/package=dplyr}.
 }
 \seealso{
 \code{\link[=simulateCoDigest]{simulateCoDigest()}}

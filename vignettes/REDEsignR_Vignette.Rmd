@@ -1,8 +1,8 @@
 ---
-title: "REDEsignR_Vignette"
+title: "REDesignR: Restriction Enzyme Simulation and Visualization to Aid in Experiement Design"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{REDEsignR_Vignette}
+  %\VignetteIndexEntry{REDesignR: Restriction Enzyme Simulation and Visualization to Aid in Experiement Design}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -16,4 +16,193 @@ knitr::opts_chunk$set(
 
 ```{r setup}
 library(REDesignR)
+```
+
+## 1. Introduction
+
+**REDesignR** is an R package developed to provide a set of tools to perform *in silico* restriction enzyme digestion simulation and visualization to aid with experiment design. Its workflow is designed to support:
+
+- Exploration of enzyme cutting patterns  
+- Co-digestion simulation for multiple enzymes  
+- Restriction map visualization  
+- Gel electrophoresis simulation based on fragment sizes 
+
+To download **REDesignR**, use the following commands:
+
+```r
+install.packages("BiocManager")
+BiocManager::install(c("Biostrings", "DECIPHER"))
+
+install.packages("devtools")
+require("devtools")
+
+devtools::install_github("christinecheng1229/REDesignR", build_vignettes = TRUE)
+library("REDesignR")
+```
+
+To list all available functions and dataset in the package:
+
+```{r}
+ls("package:REDesignR")
+```
+
+To list all sample datasets available in the package:
+
+```{r}
+data(package = "REDesignR")
+```
+
+This vignette demonstrates a typical pipeline using the following available functions:
+
+- `simulateCoDigest()`  
+- `plotRestrictionMap()`  
+- `simulateGel()`  
+
+---
+
+## 2. Example Sequence
+
+For demonstration, we use a simple DNA sequence.
+
+```{r}
+sequence <- Biostrings::DNAString(
+  "ATGCGTGAATTCGCGGATCCGATCGATTAAGCTTAGCATGCGGCCGCAATTCGATCGATCGGATCCGATTAAGCTT"
+)
+```
+
+---
+
+## 3. Simulating Co-Digestion
+
+`simulateCoDigest()` predicts all restriction cut sites and resulting fragments for one or more enzymes.
+
+```{r}
+codigest_result <- simulateCoDigest(
+  sequence = sequence,
+  enzymes = c("EcoRI", "BamHI", "HindIII")
+)
+
+codigest_result
+```
+
+### Output structure
+
+`codigest_result` includes:
+- Enzyme-specific cut positions
+- Combined digestion fragments
+- Metadata for downstream visualization
+
+---
+
+## 4. Visualizing Restriction Maps
+
+`plotRestrictionMap()` generates a genomic-style diagram showing enzyme recognition sites and cut locations.
+
+```{r}
+plotRestrictionMap(
+  sequence = sequence,
+  enzymes = c("EcoRI", "BamHI", "HindIII")
+)
+```
+
+This visualization is especially useful when designing cloning strategies or checking compatibility of enzymes in multi-cut workflows.
+
+---
+
+## 5. Simulating Gel Electrophoresis
+
+`simulateGel()` uses fragment sizes to generate a synthetic gel image.
+
+```{r}
+simulateGel(
+  fragments = codigest_result$fragments,
+  ladder = "1kb"
+)
+```
+
+### Interpreting the gel
+
+The simulated gel displays:
+- A labelled size ladder
+- Bands corresponding to predicted fragment sizes
+
+---
+
+## 6. End-to-End Workflow
+
+Below is a full pipeline combining all features of the package. It is recommended that first-time users try this workflow first, before trying alternate workflows:
+
+```{r}
+enzymes <- c("EcoRI", "BamHI")
+
+# 1. Co-digest
+result <- simulateCoDigest(
+  sequence = sequence,
+  enzymes = enzymes
+)
+
+# 2. Restriction map
+plotRestrictionMap(
+  sequence = sequence,
+  enzymes = enzymes
+)
+
+# 3. Gel simulation
+simulateGel(
+  fragments = result$fragments,
+  ladder = "100bp"
+)
+```
+
+---
+
+## Launching the REDesignR Shiny Application
+
+**REDesignR** includes an interactive Shiny app that provides a graphical interface for restriction enzyme exploration, digestion planning, and visualization.
+You can launch the app with:
+
+```r
+REDesignR::runREDesignR()
+```
+
+The Shiny app could be useful for intial exploration of this tool or for those less familiar with R programming.
+
+## Dataset: Type II Restriction Enzymes Metadata
+
+**REDesignR** also provides a dataset `Enzymes`, derived from the REBASE (v511, Oct 28 2025) database. It contains metadata on Type II restriction enzymes including:
+- Enzyme Name
+- Enzyme Prototype
+- Recognition sequence with cleavage pattern(s)
+
+To load and explore the dataset:
+
+```r
+data("Enzymes", package = "REDesignR")
+
+# View documentation
+?REDesignR::Enzymes
+
+# View structure
+str(Enzymes)
+
+# First few rows
+head(Enzymes)
+
+```
+
+## Cite this package
+
+If you use any functions from this package, please cite:
+
+> Cheng, C. (2025) REDesignR: A tool to optimize restriction enzyme experiments.
+  Unpublished. URL https://github.com/christinecheng1229/REDesignR.
+  
+## References
+
+
+
+## Session Info
+
+```{r}
+sessionInfo()
 ```
