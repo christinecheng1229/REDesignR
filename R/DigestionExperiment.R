@@ -37,8 +37,11 @@
 #'
 #' @references
 #' Müller K, Wickham H (2025). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
+#'
 #' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
+#'
 #' Wickham H (2019). _assertthat: Easy Pre and Post Assertions_. doi:10.32614/CRAN.package.assertthat <https://doi.org/10.32614/CRAN.package.assertthat>, R package version 0.2.1, <https://CRAN.R-project.org/package=assertthat>.
+#'
 #' Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” _The R Journal_, *16*(2), 191-200.
 #'
 #' @import Biostrings

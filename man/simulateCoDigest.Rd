@@ -43,7 +43,10 @@ simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), REDesignR::Enzymes[c(1,4)
 }
 \references{
 Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}. doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble}, R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
+
 Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). \emph{Biostrings: Efficient manipulation of biological strings}. doi:10.18129/B9.bioc.Biostrings \url{https://doi.org/10.18129/B9.bioc.Biostrings}, R package version 2.78.0, \url{https://bioconductor.org/packages/Biostrings}.
+
 Wickham H (2019). \emph{assertthat: Easy Pre and Post Assertions}. doi:10.32614/CRAN.package.assertthat \url{https://doi.org/10.32614/CRAN.package.assertthat}, R package version 0.2.1, \url{https://CRAN.R-project.org/package=assertthat}.
+
 Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” \emph{The R Journal}, \emph{16}(2), 191-200.
 }

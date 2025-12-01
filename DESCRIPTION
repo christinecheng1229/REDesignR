@@ -24,6 +24,10 @@ Roxygen: list(markdown = TRUE)
 Suggests:   
     knitr,
     rmarkdown,
+    S4Vectors,
+    IRanges,
+    XVector,
+    Seqinfo,
     testthat (>= 3.0.0)
 VignetteBuilder: knitr
 Imports: 

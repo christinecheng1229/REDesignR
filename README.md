@@ -37,15 +37,20 @@ won’t confound downstream experiments/results.
 To install the latest version of the package:
 
 ``` r
+install.packages("BiocManager")
+BiocManager::install(c("Biostrings", "DECIPHER"))
+
+install.packages("devtools")
 require("devtools")
-devtools::install github("christinecheng1229/REDesignR",build vignettes = TRUE)
+
+devtools::install_github("christinecheng1229/REDesignR", build_vignettes = TRUE)
 library("REDesignR")
 ```
 
-To run the shinyApp: TODO Under construction
+To run the shinyApp:
 
 ``` r
-# runREDesignR()
+runREDesignR()
 ```
 
 ## Overview
@@ -70,7 +75,7 @@ browseVignettes("REDesignR")  # View package vignette(s)
     restriction enzyme to use for digestion, based on experimental
     environments and desired average fragment length.
 
-The package also contains a dataset, called ‘Enzymes’ that can be used
+The package also contains a dataset, called `Enzymes` that can be used
 as a source of restriction enzymes and their recognition sites.
 
 <!-- An overview of the package is illustrated below.-->
@@ -79,12 +84,12 @@ as a source of restriction enzymes and their recognition sites.
 
 ## Contributions
 
-The author of the package is Christine Cheng. OpenAI ChatGPT-5.1 Auto
-model was used during the package development process to aid in
-maintaining consistent formatting across R sripts, identifying gaps in
-unit test coverage, TODO. TODO Outline contributions from other
-packages/sources for each function, etc. Remember your individual
-contributions to the package are (also) important.
+The author of the package is Christine Cheng. OpenAI’s ChatGPT-5.1 model
+was used during the package development process to aid in maintaining
+consistent formatting across R sripts, identifying gaps in unit test
+coverage, TODO. TODO Outline contributions from other packages/sources
+for each function, etc. Remember your individual contributions to the
+package are (also) important.
 
 ## References
 
