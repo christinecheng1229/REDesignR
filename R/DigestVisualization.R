@@ -12,8 +12,8 @@
 #' @param show_lengths A boolean dictating whether numerical fragment lengths are shown as overlay on the plot; TRUE by default.
 #' @param gel_style A boolean dictating how digested fragments are visualized; FALSE by default:
 #' \itemize {
-#'    \item TRUE = simulated agarose gel (bands by decreasing fragment length) view
-#'    \item FALSE = linear restriction map view
+#' \item TRUE = simulated agarose gel (bands by decreasing fragment length) view
+#' \item FALSE = linear restriction map view
 #' }
 #'
 #' @returns A Plot of the results of a co-digestion experiment, either as an agarose gel or linear restriction map view and/or overlap of fragment lengths.

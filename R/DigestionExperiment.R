@@ -4,12 +4,8 @@
 # Version: 1.2
 # Bugs and Issues: None known.
 
-# ------------------------------------------------------------------------------
-# Main function: simulateCoDigest
-# Simulates co-digestion by 2 restriction enzymes.
-# ------------------------------------------------------------------------------
-
-#' Simulates multi-restriction enzyme digestion
+# ---------------------- Main function: simulateCoDigest ----------------------
+#' Simulates co-restriction enzyme digestion
 #'
 #' A function that simulates a co-digestion experiment given a DNA sequence and the recognition sequences of 2 restriction enzymes.
 #'
@@ -18,7 +14,7 @@
 #'   - Name - A string indicating the name of the restriction enzymes.
 #'   - RecognitionSeq - A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
 #'
-#' @returns Returns `invisible(NULL)` and a message if no digestion sites are found. Otherwise, returns a tibble of fragments with columns:
+#' @returns Returns `invisible(NULL)` and a message if no digestion sites are found. Otherwise, returns a [tibble()] of fragments with columns:
 #' \itemize{
 #'   \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 #'   \item FragmentID - An integer representing the order of resulting digested DNA fragments.
@@ -29,14 +25,15 @@
 #'
 #' @examples
 #' # Using restriction enzymes available with package.
+#' data(Enzymes, package = "REDesignR")  # load data
 #'
-#' # Example 1:
+#' # Example 1: ---------------------------------------------------------------
 #' # Simulate co-digestion with RE AaaI and AagI.
-#' simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), Enzymes[c(1,4),])
+#' simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), REDesignR::Enzymes[c(1,4),])
 #'
-#' # Example 2:
+#' # Example 2: ---------------------------------------------------------------
 #' # Simulate digestion when no cleavage sites are found.
-#' simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
+#' simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), REDesignR::Enzymes[c(1,4),])
 #'
 #' @references
 #' Müller K, Wickham H (2025). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
@@ -86,9 +83,6 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
 
   # ------------------------ Run digestion -----------------------------
 
-  # firstDigest <- safeDigest(seqSet, enzymes[1, ]$RecognitionSeq)
-  # secondDigest <- safeDigest(seqSet, enzymes[2, ]$RecognitionSeq)
-
   firstDigest <- safeDigest(dnaSet, enzymes$RecognitionSeq[1])
   secondDigest <- safeDigest(dnaSet, enzymes$RecognitionSeq[2])
 
@@ -114,14 +108,6 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
       sequenceLen = sequenceLen
     )
 
-    # # Add sequence boundaries
-    # cutPositions <- unique(c(1L, secondDigest, sequenceLen))
-    # cutPositions <- sort(cutPositions)
-    # fragLen <- diff(cutPositions) # Compute fragment lengths
-    #
-    # # Update results table
-    # enzymeNames <- enzymes$Name[2]
-
   } else if (length(secondDigest) == 0) {
 
     # Case: only first enzyme digests
@@ -130,14 +116,6 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
       enzymeName = enzymes$Name[1],
       sequenceLen = sequenceLen
     )
-
-    # # Add sequence boundaries
-    # cutPositions <- unique(c(1L, firstDigest, sequenceLen))
-    # cutPositions <- sort(cutPositions)
-    # fragLen <- diff(cutPositions) # Compute fragment lengths
-    #
-    # # Update results table
-    # enzymeNames <- enzymes$Name[1]
 
   } else {
 
@@ -150,34 +128,16 @@ simulateCoDigest <- function(dnaSeq, enzymes) {  # TODO: allow user to input the
       sequenceLen = sequenceLen
     )
 
-    # cutPositions <- sort(c(firstDigest, secondDigest)) # order digested positions
-    #
-    # # Add sequence boundaries
-    # cutPositions <- unique(c(1L, cutPositions, sequenceLen))
-    # cutPositions <- sort(cutPositions)
-    # fragLen <- diff(cutPositions) # Compute fragment lengths
-    #
-    # # Update results table
-    # enzymeNames <- paste(enzymes$Name, collapse = " + ")
-
   }
 
-  # result <- tibble::tibble(Enzymes = enzymeNames,
-  #                          FragmentID = seq_along(fragLen),
-  #                          Start = head(cutPositions, -1),
-  #                          End = tail(cutPositions, -1) - 1,
-  #                          Length = fragLen)
   return(result)
+
 }
 
-# ------------------------------------------------------------------------------
-# Helper: safeDigest
+# ----------------------------- Helper: safeDigest -----------------------------
 # Handles DECIPHER::DigestDNA errors when no cut locations exist.
-# Returns: integer vector of cut positions (possibly length 0).
-# ------------------------------------------------------------------------------
+# Returns integer vector of cut positions (possibly length 0).
 
-#' Helper function of simulateCoDigest to handle errors thrown by DECIPHER::DigestDNA
-#' @keywords internal
 safeDigest <- function(dnaSeq, recognitionSite) {
 
   tryCatch(
@@ -206,14 +166,10 @@ safeDigest <- function(dnaSeq, recognitionSite) {
   )
 }
 
-# ------------------------------------------------------------------------------
-# Helper: buildDigestDf
+# --------------------------- Helper: buildDigestDf ---------------------------
 # Helper function that builds digest dataframe to reduce repeated code chunks.
-# Returns: dataframe of digest results to be returned in simulateCoDigest
-# ------------------------------------------------------------------------------
+# Returns tibble of digest results to be returned in simulateCoDigest
 
-#' Helper function of simulateCoDigest to build digest dataframe
-#' @keywords internal
 buildDigestDf <- function(fragments, enzymeName, sequenceLen) {
 
   # Add sequence boundaries

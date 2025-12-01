@@ -2,7 +2,7 @@
 % Please edit documentation in R/DigestionExperiment.R
 \name{simulateCoDigest}
 \alias{simulateCoDigest}
-\title{Simulates multi-restriction enzyme digestion}
+\title{Simulates co-restriction enzyme digestion}
 \usage{
 simulateCoDigest(dnaSeq, enzymes)
 }
@@ -16,7 +16,7 @@ simulateCoDigest(dnaSeq, enzymes)
 }}
 }
 \value{
-Returns \code{invisible(NULL)} and a message if no digestion sites are found. Otherwise, returns a tibble of fragments with columns:
+Returns \code{invisible(NULL)} and a message if no digestion sites are found. Otherwise, returns a \code{\link[tibble:tibble]{tibble::tibble()}} of fragments with columns:
 \itemize{
 \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
 \item FragmentID - An integer representing the order of resulting digested DNA fragments.
@@ -30,14 +30,15 @@ A function that simulates a co-digestion experiment given a DNA sequence and the
 }
 \examples{
 # Using restriction enzymes available with package.
+data(Enzymes, package = "REDesignR")  # load data
 
-# Example 1:
+# Example 1: ---------------------------------------------------------------
 # Simulate co-digestion with RE AaaI and AagI.
-simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), Enzymes[c(1,4),])
+simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), REDesignR::Enzymes[c(1,4),])
 
-# Example 2:
+# Example 2: ---------------------------------------------------------------
 # Simulate digestion when no cleavage sites are found.
-simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), Enzymes[c(1,4),])
+simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), REDesignR::Enzymes[c(1,4),])
 
 }
 \references{
