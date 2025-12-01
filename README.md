@@ -92,7 +92,7 @@ contributions to the package are (also) important.
   <doi:10.32614/CRAN.package.tibble>
   <https://doi.org/10.32614/CRAN.package.tibble>, R package version
   3.3.0, <https://CRAN.R-project.org/package=tibble>.
-- OpenAI. (2025). ChatGPT (GPT-5.1) \[Large language model\].
+- OpenAI. (2025). *ChatGPT (GPT-5.1)* \[Large language model\].
   <https://openai.com/chatgpt>
 - Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). *Biostrings:
   Efficient manipulation of biological strings*.

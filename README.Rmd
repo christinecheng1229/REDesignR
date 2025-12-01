@@ -68,7 +68,7 @@ TODO Outline contributions from other packages/sources for each function, etc. R
 
 ## References
 - Müller K, Wickham H (2025). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
-- OpenAI. (2025). ChatGPT (GPT-5.1) [Large language model]. https://openai.com/chatgpt
+- OpenAI. (2025). _ChatGPT (GPT-5.1)_ [Large language model]. https://openai.com/chatgpt
 - Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
 - Pagès H, Lawrence M, Aboyoun P (2025). _S4Vectors: Foundation of vector-like and list-like containers in Bioconductor_. doi:10.18129/B9.bioc.S4Vectors <https://doi.org/10.18129/B9.bioc.S4Vectors>, R package version 0.48.0, <https://bioconductor.org/packages/S4Vectors>.
 - R Core Team (2025). _R: A Language and Environment for Statistical Computing_. R
