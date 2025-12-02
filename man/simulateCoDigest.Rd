@@ -7,26 +7,36 @@
 simulateCoDigest(dnaSeq, enzymes)
 }
 \arguments{
-\item{dnaSeq}{A DNAString representing the DNA sequence to be digested in the simulation.}
+\item{dnaSeq}{A DNAString representing the DNA sequence to be digested in the
+simulation.}
 
-\item{enzymes}{A tibble or data frame of 2 restriction enzymes containing the following at minimum:
+\item{enzymes}{A tibble or data frame of 2 restriction enzymes containing
+the following at minimum:
 \itemize{
 \item Name - A string indicating the name of the restriction enzymes.
-\item RecognitionSeq - A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
+\item RecognitionSeq - A string representing the recognition sequences of the
+corresponding restriction enzyme, including the cleavage site.
 }}
 }
 \value{
-Returns \code{invisible(NULL)} and a message if no digestion sites are found. Otherwise, returns a list of:
+Returns \code{invisible(NULL)} and a message if no digestion sites are
+found. Otherwise, returns a list of:
 \itemize{
 \item digestDf - A \code{\link[tibble:tibble]{tibble::tibble()}} of fragments with columns:
 \itemize{
-\item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
-\item FragmentID - An integer representing the order of resulting digested DNA fragments.
-\item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
-\item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
-\item Length - An integer representing the length of the resulting DNA fragment after digestion.
+\item Enzymes - A string indicating the name of the restriction enzyme
+used for digestion.
+\item FragmentID - An integer representing the order of resulting
+digested DNA fragments.
+\item Start - An integer representing the starting position of the DNA
+fragment, in reference to the pre-digested DNA sequence.
+\item End - An integer representing the ending position of the DNA fragment,
+in reference to the pre-digested DNA sequence.
+\item Length - An integer representing the length of the resulting DNA
+fragment after digestion.
 }
-\item isCoDigest - A boolean indicating whether \code{digestDf} contains fragments from a single-enzyme digestion (\code{FALSE}) or a co-digestion (\code{TRUE}).
+\item isCoDigest - A boolean indicating whether \code{digestDf} contains
+fragments from a single-enzyme digestion (\code{FALSE}) or a co-digestion (\code{TRUE}).
 }
 }
 \description{
@@ -39,17 +49,30 @@ data(Enzymes, package = "REDesignR")  # load data
 
 # Example 1: ---------------------------------------------------------------
 # Simulate co-digestion with RE AaaI and AagI.
-simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), REDesignR::Enzymes[c(1,4),])
+simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"),
+                  REDesignR::Enzymes[c(1,4),])
 
 # Example 2: ---------------------------------------------------------------
+# Simulate single-digestion
+simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"),
+                  Enzymes[c(1, 6), ])
+
+# Example 3: ---------------------------------------------------------------
 # Simulate digestion when no cleavage sites are found.
-simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), REDesignR::Enzymes[c(1,4),])
+simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"),
+                  REDesignR::Enzymes[c(1,4),])
 
 }
 \references{
-Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}. doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble}, R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
+Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}.
+doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble},
+R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
 
-Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). \emph{Biostrings: Efficient manipulation of biological strings}. doi:10.18129/B9.bioc.Biostrings \url{https://doi.org/10.18129/B9.bioc.Biostrings}, R package version 2.78.0, \url{https://bioconductor.org/packages/Biostrings}.
+Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). \emph{Biostrings: Efficient
+manipulation of biological strings}. doi:10.18129/B9.bioc.Biostrings
+\url{https://doi.org/10.18129/B9.bioc.Biostrings}, R package version 2.78.0,
+\url{https://bioconductor.org/packages/Biostrings}.
 
-Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” \emph{The R Journal}, \emph{16}(2), 191-200.
+Wright ES (2024). “Fast and Flexible Search for Homologous Biological
+Sequences with DECIPHER v3.” \emph{The R Journal}, \emph{16}(2), 191-200.
 }

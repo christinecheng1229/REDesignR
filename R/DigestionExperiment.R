@@ -10,22 +10,32 @@
 #' A function that simulates a co-digestion experiment given a DNA sequence and
 #' the recognition sequences of 2 restriction enzymes.
 #'
-#' @param dnaSeq A DNAString representing the DNA sequence to be digested in the simulation.
-#' @param enzymes  A tibble or data frame of 2 restriction enzymes containing the following at minimum:
+#' @param dnaSeq A DNAString representing the DNA sequence to be digested in the
+#'  simulation.
+#' @param enzymes  A tibble or data frame of 2 restriction enzymes containing
+#'  the following at minimum:
 #'   - Name - A string indicating the name of the restriction enzymes.
-#'   - RecognitionSeq - A string representing the recognition sequences of the corresponding restriction enzyme, including the cleavage site.
+#'   - RecognitionSeq - A string representing the recognition sequences of the
+#'      corresponding restriction enzyme, including the cleavage site.
 #'
-#' @returns Returns `invisible(NULL)` and a message if no digestion sites are found. Otherwise, returns a list of:
+#' @returns Returns `invisible(NULL)` and a message if no digestion sites are
+#'  found. Otherwise, returns a list of:
 #' \itemize{
 #'    \item digestDf - A [tibble()] of fragments with columns:
 #'    \itemize{
-#'      \item Enzymes - A string indicating the name of the restriction enzyme used for digestion.
-#'      \item FragmentID - An integer representing the order of resulting digested DNA fragments.
-#'      \item Start - An integer representing the starting position of the DNA fragment, in reference to the pre-digested DNA sequence.
-#'      \item End - An integer representing the ending position of the DNA fragment, in reference to the pre-digested DNA sequence.
-#'      \item Length - An integer representing the length of the resulting DNA fragment after digestion.
+#'      \item Enzymes - A string indicating the name of the restriction enzyme
+#'        used for digestion.
+#'      \item FragmentID - An integer representing the order of resulting
+#'        digested DNA fragments.
+#'      \item Start - An integer representing the starting position of the DNA
+#'        fragment, in reference to the pre-digested DNA sequence.
+#'      \item End - An integer representing the ending position of the DNA fragment,
+#'        in reference to the pre-digested DNA sequence.
+#'      \item Length - An integer representing the length of the resulting DNA
+#'        fragment after digestion.
 #'    }
-#'    \item isCoDigest - A boolean indicating whether `digestDf` contains fragments from a single-enzyme digestion (`FALSE`) or a co-digestion (`TRUE`).
+#'    \item isCoDigest - A boolean indicating whether `digestDf` contains
+#'      fragments from a single-enzyme digestion (`FALSE`) or a co-digestion (`TRUE`).
 #' }
 #'
 #' @examples
@@ -34,18 +44,31 @@
 #'
 #' # Example 1: ---------------------------------------------------------------
 #' # Simulate co-digestion with RE AaaI and AagI.
-#' simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"), REDesignR::Enzymes[c(1,4),])
+#' simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"),
+#'                   REDesignR::Enzymes[c(1,4),])
 #'
 #' # Example 2: ---------------------------------------------------------------
+#' # Simulate single-digestion
+#' simulateCoDigest(Biostrings::DNAString("CGGCCGATCGATCGGCCG"),
+#'                   Enzymes[c(1, 6), ])
+#'
+#' # Example 3: ---------------------------------------------------------------
 #' # Simulate digestion when no cleavage sites are found.
-#' simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"), REDesignR::Enzymes[c(1,4),])
+#' simulateCoDigest(Biostrings::DNAString("AGGATAAACAA"),
+#'                   REDesignR::Enzymes[c(1,4),])
 #'
 #' @references
-#' Müller K, Wickham H (2025). _tibble: Simple Data Frames_. doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
+#' Müller K, Wickham H (2025). _tibble: Simple Data Frames_.
+#' doi:10.32614/CRAN.package.tibble <https://doi.org/10.32614/CRAN.package.tibble>,
+#' R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
 #'
-#' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
+#' Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). _Biostrings: Efficient
+#' manipulation of biological strings_. doi:10.18129/B9.bioc.Biostrings
+#' <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.78.0,
+#' <https://bioconductor.org/packages/Biostrings>.
 #'
-#' Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” _The R Journal_, *16*(2), 191-200.
+#' Wright ES (2024). “Fast and Flexible Search for Homologous Biological
+#' Sequences with DECIPHER v3.” _The R Journal_, *16*(2), 191-200.
 #'
 #' @importFrom Biostrings DNAStringSet DNAString
 #' @import DECIPHER
@@ -60,12 +83,14 @@ simulateCoDigest <- function(dnaSeq, enzymes) {
 
   # Argument: dnaSeq
   if (!inherits(dnaSeq, "DNAString")) {
-    stop("Argument 'dnaSeq' must not be empty and must be a DNAString object.", call. = FALSE)
+    stop("Argument 'dnaSeq' must not be empty and must be a DNAString object.",
+         call. = FALSE)
   }
 
-  # Argument: enzymes (must have exactly 2 rows & be coercible to a tibble)
+  # Argument: enzymes
   if (!is.data.frame(enzymes) || nrow(enzymes) != 2) {
-    stop("Argument 'enzymes' must not be empty and must be a data frame with exactly 2 rows.", call. = FALSE)
+    stop("Argument 'enzymes' must not be empty and must be a data frame with
+         exactly 2 rows.", call. = FALSE)
   }
 
   # Standardize to tibble for downstream work
@@ -95,7 +120,8 @@ simulateCoDigest <- function(dnaSeq, enzymes) {
 
     # Case: both enzymes don't digest given DNA sequence
     message("No digestion site(s) found in sequence")
-    return(invisible(NULL)) # to stop function execution & prevent displaying 'NULL' to user
+    # to stop function execution & prevent displaying 'NULL' to user
+    return(invisible(NULL))
   }
 
   # ------------------------ Successful digestion cases -----------------------
@@ -131,11 +157,25 @@ simulateCoDigest <- function(dnaSeq, enzymes) {
 
     mergedCuts <- sort(c(firstDigest, secondDigest)) # order digested positions
 
-    digestDf <- buildDigestDf(
+    digestBothDf <- buildDigestDf(
       fragments   = mergedCuts,
       enzymeName  = paste(enzymes$Name, collapse = " + "),
       sequenceLen = sequenceLen
     )
+
+    digestOneDf <- buildDigestDf(
+      fragments   = firstDigest,
+      enzymeName  = enzymes$Name[1],
+      sequenceLen = sequenceLen
+    )
+
+    digestTwoDf <- digestDf <- buildDigestDf(
+      fragments   = secondDigest,
+      enzymeName  = enzymes$Name[2],
+      sequenceLen = sequenceLen
+    )
+
+    digestDf <- bind_rows(digestBothDf, digestOneDf, digestTwoDf)
 
   }
 

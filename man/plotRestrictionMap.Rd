@@ -2,30 +2,73 @@
 % Please edit documentation in R/DigestVisualization.R
 \name{plotRestrictionMap}
 \alias{plotRestrictionMap}
-\title{Visualize Restriction Enzyme co-digestion results}
+\title{Visualize restriction enzyme digestion patterns as linear maps}
 \usage{
 plotRestrictionMap(codigestDf, multiDigest = TRUE, showLengths = TRUE)
 }
 \arguments{
-\item{codigestDf}{A tibble or data frame of co-digestion results in the format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
+\item{codigestDf}{A tibble or data frame of co-digestion results in the
+format outputted by \code{\link[=simulateCoDigest]{simulateCoDigest()}}.}
 
-\item{multiDigest}{A boolean indicating whether \code{codigestDf} resulted from a single-digest (\code{FALSE}) or a co-digest (\code{TRUE}), the latter being the default.}
+\item{multiDigest}{A boolean indicating whether \code{codigestDf} resulted from a
+single-digest (\code{FALSE}) or a co-digest (\code{TRUE}), the latter being the default.}
 
-\item{showLengths}{A boolean dictating whether numerical fragment lengths are shown as overlay on the plot; TRUE by default.}
+\item{showLengths}{A boolean dictating whether numerical fragment lengths are
+shown as overlay on the plot; TRUE by default.}
 }
 \value{
-A plot of the results of a co-digestion experiment, either as an agarose gel or linear restriction map view and/or overlap of fragment lengths.
+For single-digest input (\code{multiDigest = FALSE}), the function returns a single
+plot representing the fragment layout for that enzyme.
 
-TODO: examples
+For co-digest input (\code{multiDigest = TRUE}), three restriction maps are
+generated and stacked:
+\enumerate{
+\item The co-digest (combined enzymes)
+\item The first enzyme alone
+\item The second enzyme alone
+}
+
+This allows visual comparison between single- and co- digestion patterns.
 }
 \description{
-TODO description
+This function produces one or more \emph{linear restriction maps} from the output
+of \code{\link[=simulateCoDigest]{simulateCoDigest()}}. A restriction map shows fragment positions along the
+original DNA sequence.
+}
+\examples{
+# get sample data
+data(Enzymes, package = "REDesignR")
+dna <- Biostrings::DNAString("CGGCCGATCGATCGGCCG")
+
+# Example 1: ---------------------------------------------------------------
+# Co-digest visualization
+result <- simulateCoDigest(dna, Enzymes[c(1, 4), ])
+plotRestrictionMap(result$digestDf, multiDigest = TRUE)
+
+# hide fragment length labels
+plotRestrictionMap(result$digestDf, showLengths = FALSE)
+
+# Example 2: ---------------------------------------------------------------
+# Single-enzyme digest visualization
+single <- simulateCoDigest(dna, Enzymes[c(1, 6), ])
+plotRestrictionMap(single$digestDf, multiDigest = FALSE)
+
 }
 \references{
-Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}. doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble}, R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
-Pedersen T (2025). \emph{patchwork: The Composer of Plots.} R package version 1.3.2.9000, https://patchwork.data-imaginist.com.
-Wickham, H. (2016). \emph{ggplot2: Elegant Graphics for Data Analysis.} Springer-Verlag New York. ISBN: 978-3-319-24277-4.
-Wickham H, François R, Henry L, Müller K, Vaughan D (2023). \emph{dplyr: A Grammar of Data Manipulation}. doi:10.32614/CRAN.package.dplyr \url{https://doi.org/10.32614/CRAN.package.dplyr}, R package version 1.1.4, \url{https://CRAN.R-project.org/package=dplyr}.
+Müller K, Wickham H (2025). \emph{tibble: Simple Data Frames}.
+doi:10.32614/CRAN.package.tibble \url{https://doi.org/10.32614/CRAN.package.tibble},
+R package version 3.3.0, \url{https://CRAN.R-project.org/package=tibble}.
+
+Pedersen T (2025). \emph{patchwork: The Composer of Plots.}
+R package version 1.3.2.9000, https://patchwork.data-imaginist.com.
+
+Wickham, H. (2016). \emph{ggplot2: Elegant Graphics for Data Analysis.}
+Springer-Verlag New York. ISBN: 978-3-319-24277-4.
+
+Wickham H, François R, Henry L, Müller K, Vaughan D (2023). \emph{dplyr: A Grammar
+of Data Manipulation}. doi:10.32614/CRAN.package.dplyr
+\url{https://doi.org/10.32614/CRAN.package.dplyr}, R package version 1.1.4,
+\url{https://CRAN.R-project.org/package=dplyr}.
 }
 \seealso{
 \code{\link[=simulateCoDigest]{simulateCoDigest()}}

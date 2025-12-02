@@ -1,108 +1,231 @@
-# TODO Source: https://shiny.posit.co/r/gallery/application-layout/tabsets/
-# NOTE: try to refrain from using single letter variable names (e.g., d, n) for input/output/buttons etc.
+# Purpose: R script for Shiny App.
+# Author: Christine Cheng
+# Date: December 1, 2025
+# Version: 1.2
+# Bugs and Issues: None known.
 
-# Define UI for random distribution app ----
+# ---------------- Define UI ----------------
 ui <- fluidPage(
+  titlePanel("REDesignR Interactive App"),
 
-  # App title ----
-  titlePanel("Simulates, Optimizes, and Visualizes Restriction Enzyme Digestion"),
+  tags$p("This Shiny App is a tool for simulating restriction enzyme
+         co-digestion and generating restriction maps and gel simulations to
+         aid in digestion experiment design optimization."),
 
-  # Sidebar layout with input and output definitions ----
-  sidebarLayout(
+  fluidRow(
 
-    # Sidebar panel for inputs ----
-    sidebarPanel(
+    # ------------ Inputs panel ------------
+    column(
+      width = 4,
 
-      # TODO detailed description of what the tool does and how the user can interact/use it
-      tags$p("This Shiny application is dedicated to [...]. It can be used to calculate [...]."),
-      tags$p("Select appropriate input and press 'Run'."),
+      # ------------ Description ------------
+      h3("REDesignR Co-Digestion Simulation"),
+      helpText(
+        "Use this panel to specify the DNA sequence to digest and two",
+        "restriction enzymes along with their recognition sequences.",
+        "The results will update the visualization tabs on the right when",
+        "you click 'Run simulation'."
+      ),
 
-      # Input: Select the random distribution type ----
-      # TODO ensure input has detailed descriptions to guide users interacting with the tool
-        # good to add default values too e.g. logL: -5080,
-      # tags$p("Enter or select values required to perform analysis. Default
-      #                   values are shown. Press 'Run' when done."),
-      # textInput(inputId = "logL",
-      #           label = "Enter loglikelihood value", "-5080"),
+      tags$hr(),
 
-      radioButtons("dist", "Distribution type:",
-                   c("Normal" = "norm",
-                     "Uniform" = "unif",
-                     "Log-normal" = "lnorm",
-                     "Exponential" = "exp")),
+      # ------------ Inputs ------------
+      h3("Co-digestion Inputs"),
 
-      # br() element to introduce extra vertical spacing ----
-      br(),
+      textAreaInput(
+        inputId = "dna_sequence",
+        label   = "DNA sequence",
+        placeholder = "Paste a raw sequence (A/C/G/T characters only)...",
+        rows = 4
+      ),
 
-      # Input: Slider for the number of observations to generate ----
-      sliderInput("n",
-                  "Number of observations:",
-                  value = 500,
-                  min = 1,
-                  max = 1000)
+      # ------------ Enzymes file upload ------------
+      fileInput(
+        inputId = "enzyme_csv",
+        label   = "Upload 2-enzyme CSV (cols: Name, RecognitionSeq)",
+        accept  = ".csv"
+      ),
 
+      # ------------ Download sample enzyme dataset ------------
+      downloadButton(
+        outputId = "download_sample_csv",
+        label = "Download sample enzyme CSV"
+      ),
+
+      helpText("— OR — enter enzyme data manually:"),
+
+      # ------------ Manual Enzyme Inputs ------------
+      textInput(
+        inputId = "enzyme_1_name",
+        label   = "Enzyme 1 Name",
+        placeholder = "AaaI"
+      ),
+      textInput(
+        inputId = "enzyme_1_seq",
+        label   = "Enzyme 1 Recognition Sequence",
+        placeholder = "C/GGCCG"
+      ),
+
+      textInput(
+        inputId = "enzyme_2_name",
+        label   = "Enzyme 2 Name",
+        placeholder = "AagI"
+      ),
+      textInput(
+        inputId = "enzyme_2_seq",
+        label   = "Enzyme 2 Recognition Sequence",
+        placeholder = "AT/CGAT"
+      ),
+
+      tags$hr(),
+
+      # Run simulation button
+      actionButton(
+        inputId = "run_codigest",
+        label = "Run simulation",
+        class = "btn-primary"
+      )
     ),
 
-        # if you only want action after the user finishes input (E.g., manually typing in input field): actionButton()
+    # ------------ Output Tabs ------------
+    column(
+      width = 8,
 
+      tabsetPanel(
 
-    # Main panel for displaying outputs ----
-    mainPanel(
+        # ------------ Restriction Map Tab ------------
+        tabPanel(
+          title = "Restriction Map",
+          br(),
+          h3("Restriction Map"),
+          plotOutput("restriction_map_plot")
+        ),
 
-      # Output: Tabset w/ plot, summary, and table ----
-      tabsetPanel(type = "tabs",
-                  tabPanel("Plot", plotOutput("plot")),
-                  tabPanel("Summary", verbatimTextOutput("summary")),
-                  tabPanel("Table", tableOutput("table"))
+        # ------------ Gel Simulation Tab ------------
+        tabPanel(
+          title = "Gel Simulation",
+          br(),
+          h3("Simulated Agarose Gel"),
+          plotOutput("gel_plot")
+        )
       )
-
     )
   )
 )
 
-# Define server logic for random distribution app ----
-server <- function(input, output) {
 
-  # Reactive expression to generate the requested distribution ----
-  # This is called whenever the inputs change. The output functions
-  # defined below then use the value computed from this expression
-  d <- reactive({
-    dist <- switch(input$dist,
-                   norm = rnorm,
-                   unif = runif,
-                   lnorm = rlnorm,
-                   exp = rexp,
-                   rnorm)
+# ---------------- Define Server ----------------
+server <- function(input, output, session) {
 
-    dist(input$n)
+  # ----------------- Allow user to download sample dataset ------------------
+  output$download_sample_csv <- downloadHandler(
+    filename = function() {
+      "REtype2_itype2_511.csv"
+    },
+    content = function(file) {
+      sample_path <- system.file("extdata", "REtype2_itype2_511.csv",
+                                 package = "REDesignR")
+
+      if (sample_path == "") {
+        stop("Sample CSV not found inside inst/extdata of the REDesignR package.")
+      }
+
+      file.copy(sample_path, file)
+    }
+  )
+
+  # Construct enzyme dataframe from CSV or manual inputs
+  enzyme_tbl <- reactive({
+    if (!is.null(input$enzyme_csv)) {
+      # User uploaded a CSV
+      df <- read.csv(input$enzyme_csv$datapath, stringsAsFactors = FALSE)
+
+      validate(
+        need(
+          nrow(df) == 2 &&
+            all(c("Name", "RecognitionSeq") %in% names(df)),
+          "CSV must contain exactly 2 rows and columns: Name, RecognitionSeq"
+        )
+      )
+
+      return(as_tibble(df))
+    }
+
+    # Otherwise use manual inputs
+    validate(
+      need(
+        input$enzyme_1_name != "" &&
+          input$enzyme_1_seq  != "" &&
+          input$enzyme_2_name != "" &&
+          input$enzyme_2_seq  != "",
+        "Please enter both enzymes (Name + RecognitionSeq) or upload a CSV."
+      )
+    )
+
+    tibble::tibble(
+      Name           = c(input$enzyme_1_name, input$enzyme_2_name),
+      RecognitionSeq = c(input$enzyme_1_seq,  input$enzyme_2_seq)
+    )
   })
 
-  # TODO also insure the output has a description so the user knows what the output is showing
-  # Generate a plot of the data ----
-  # Also uses the inputs to build the plot label. Note that the
-  # dependencies on the inputs and the data reactive expression are
-  # both tracked, and all expressions are called in the sequence
-  # implied by the dependency graph.
-  output$plot <- renderPlot({
-    dist <- input$dist
-    n <- input$n
+  # Store co-digestion results
+  codigest_out <- reactiveVal(NULL)
 
-    hist(d(),
-         main = paste("r", dist, "(", n, ")", sep = ""),
-         col = "#75AADB", border = "white")
+  observeEvent(input$run_codigest, {
+    req(input$dna_sequence)
+
+    # convert raw string to DNAString
+    dna <- Biostrings::DNAString(gsub("\\s+", "", input$dna_sequence))
+
+    enzymes <- enzyme_tbl()
+
+    # Call your provided function EXACTLY as specified
+    res <- simulateCoDigest(
+      dnaSeq  = dna,
+      enzymes = enzymes
+    )
+
+    # simulateCoDigest returns NULL if no digestion occurs
+    if (is.null(res)) {
+      codigest_out(NULL)
+      return(NULL)
+    }
+
+    codigest_out(res)
   })
 
-  # Generate a summary of the data ----
-  output$summary <- renderPrint({
-    summary(d())
+
+  # ------------ Restriction Map Visualization ------------
+  output$restriction_map_plot <- renderPlot({
+    req(codigest_out())
+
+    df <- codigest_out()$digestDf
+    multi <- codigest_out()$isCoDigest
+
+    plotRestrictionMap(
+      codigestDf = df,
+      multiDigest = multi,
+      showLengths = TRUE
+    )
   })
 
-  # Generate an HTML table view of the data ----
-  output$table <- renderTable({
-    d()
-  })
 
+  # ------------ Gel Simulation Visualization ------------
+  output$gel_plot <- renderPlot({
+    req(codigest_out())
+
+    df <- codigest_out()$digestDf
+    multi <- codigest_out()$isCoDigest
+
+    simulateGel(
+      codigestDf     = df,
+      multiDigest    = multi,
+      labelFragments = FALSE
+    )
+  })
 }
 
-# Create Shiny app ----
-shinyApp(ui, server)
+# ----- Create Shiny App -----
+shinyApp(ui = ui, server = server)
+
+# [END]

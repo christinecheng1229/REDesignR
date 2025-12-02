@@ -1,6 +1,6 @@
 Type: Package
 Package: REDesignR
-Title: Simulate and Optimize Restriction Enzyme Digestion Experiments
+Title: REDesignR: Restriction Enzyme Digests Simulation and Visualization
 Version: 0.1.1
 Authors@R: 
     person("Christine", "Cheng", , "christineentse.cheng@mail.utoronto.ca",
@@ -19,6 +19,7 @@ Depends:
     R (>= 4.1.0)
 biocViews: Software, DataRepresentation, Genetics, Visualization
 Imports: 
+    biocViews,
     Biostrings,
     DECIPHER,
     dplyr,
@@ -27,6 +28,7 @@ Imports:
     scales,
     shiny,
     tibble
+Remotes: github::hadley/ggplot2
 Suggests: 
     IRanges,
     knitr,

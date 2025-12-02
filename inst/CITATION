@@ -2,13 +2,13 @@ citHeader("To cite REDesignR in publications use:")
 
 citEntry(
   entry = "Unpublished",
-  title        = "REDesignR: A tool to optimize restriction enzyme experiments",
+  title        = "REDesignR: Restriction Enzyme Digests Simulation and Visualization",
   author       = "Christine Cheng",
   note         = "Unpublished",
   year         = "2025",
   url          = "https://github.com/christinecheng1229/REDesignR",
 
   textVersion  =
-  paste("Cheng, C. (2025) REDesignR: A tool to optimize restriction enzyme experiments.
+  paste("Cheng, C. (2025) _REDesignR: Restriction Enzyme Digests Simulation and Visualization._
   Unpublished. URL https://github.com/christinecheng1229/REDesignR.")
 )

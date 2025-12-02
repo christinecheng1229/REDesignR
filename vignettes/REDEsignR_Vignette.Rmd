@@ -1,8 +1,8 @@
 ---
-title: "REDesignR: Restriction Enzyme Simulation and Visualization to Aid in Experiement Design"
+title: "REDesignR: Restriction Enzyme Digests Simulation and Visualization"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{REDesignR: Restriction Enzyme Simulation and Visualization to Aid in Experiement Design}
+  %\VignetteIndexEntry{REDesignR: Restriction Enzyme Digests Simulation and Visualization}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 ---
@@ -20,16 +20,16 @@ library(REDesignR)
 
 ## 1. Introduction
 
-**REDesignR** is an R package developed to provide a set of tools to perform *in silico* restriction enzyme digestion simulation and visualization to aid with experiment design. Its workflow is designed to support:
+*REDesignR* is an R package developed to provide a set of tools to perform *in silico* restriction enzyme digestion simulation and visualization to aid with experiment design. Its workflow is designed to support:
 
-- Exploration of enzyme cutting patterns  
-- Co-digestion simulation for multiple enzymes  
-- Restriction map visualization  
-- Gel electrophoresis simulation based on fragment sizes 
+-   Exploration of enzyme cutting patterns
+-   Co-digestion simulation for multiple enzymes
+-   Restriction map visualization
+-   Gel electrophoresis simulation based on fragment sizes
 
-To download **REDesignR**, use the following commands:
+To install **REDesignR**, use the following commands:
 
-```r
+``` r
 install.packages("BiocManager")
 BiocManager::install(c("Biostrings", "DECIPHER"))
 
@@ -46,160 +46,179 @@ To list all available functions and dataset in the package:
 ls("package:REDesignR")
 ```
 
-To list all sample datasets available in the package:
+To view all sample datasets available in the package:
 
-```{r}
+``` r
 data(package = "REDesignR")
 ```
 
 This vignette demonstrates a typical pipeline using the following available functions:
 
-- `simulateCoDigest()`  
-- `plotRestrictionMap()`  
-- `simulateGel()`  
+-   `simulateCoDigest()`\
+-   `plotRestrictionMap()`\
+-   `simulateGel()`
 
----
-
-## 2. Example Sequence
-
-For demonstration, we use a simple DNA sequence.
-
-```{r}
-sequence <- Biostrings::DNAString(
-  "ATGCGTGAATTCGCGGATCCGATCGATTAAGCTTAGCATGCGGCCGCAATTCGATCGATCGGATCCGATTAAGCTT"
-)
-```
-
----
-
-## 3. Simulating Co-Digestion
-
-`simulateCoDigest()` predicts all restriction cut sites and resulting fragments for one or more enzymes.
-
-```{r}
-codigest_result <- simulateCoDigest(
-  sequence = sequence,
-  enzymes = c("EcoRI", "BamHI", "HindIII")
-)
-
-codigest_result
-```
-
-### Output structure
-
-`codigest_result` includes:
-- Enzyme-specific cut positions
-- Combined digestion fragments
-- Metadata for downstream visualization
-
----
-
-## 4. Visualizing Restriction Maps
-
-`plotRestrictionMap()` generates a genomic-style diagram showing enzyme recognition sites and cut locations.
-
-```{r}
-plotRestrictionMap(
-  sequence = sequence,
-  enzymes = c("EcoRI", "BamHI", "HindIII")
-)
-```
-
-This visualization is especially useful when designing cloning strategies or checking compatibility of enzymes in multi-cut workflows.
-
----
-
-## 5. Simulating Gel Electrophoresis
-
-`simulateGel()` uses fragment sizes to generate a synthetic gel image.
-
-```{r}
-simulateGel(
-  fragments = codigest_result$fragments,
-  ladder = "1kb"
-)
-```
-
-### Interpreting the gel
-
-The simulated gel displays:
-- A labelled size ladder
-- Bands corresponding to predicted fragment sizes
-
----
-
-## 6. End-to-End Workflow
-
-Below is a full pipeline combining all features of the package. It is recommended that first-time users try this workflow first, before trying alternate workflows:
-
-```{r}
-enzymes <- c("EcoRI", "BamHI")
-
-# 1. Co-digest
-result <- simulateCoDigest(
-  sequence = sequence,
-  enzymes = enzymes
-)
-
-# 2. Restriction map
-plotRestrictionMap(
-  sequence = sequence,
-  enzymes = enzymes
-)
-
-# 3. Gel simulation
-simulateGel(
-  fragments = result$fragments,
-  ladder = "100bp"
-)
-```
-
----
-
-## Launching the REDesignR Shiny Application
-
-**REDesignR** includes an interactive Shiny app that provides a graphical interface for restriction enzyme exploration, digestion planning, and visualization.
-You can launch the app with:
-
-```r
-REDesignR::runREDesignR()
-```
-
-The Shiny app could be useful for intial exploration of this tool or for those less familiar with R programming.
+------------------------------------------------------------------------
 
 ## Dataset: Type II Restriction Enzymes Metadata
 
-**REDesignR** also provides a dataset `Enzymes`, derived from the REBASE (v511, Oct 28 2025) database. It contains metadata on Type II restriction enzymes including:
-- Enzyme Name
-- Enzyme Prototype
-- Recognition sequence with cleavage pattern(s)
+*REDesignR* also provides its own dataset `Enzymes`, derived from the REBASE (v511, Oct 28 2025) database (Roberts et al., 2015). It contains metadata on Type II restriction enzymes including:
+
+-   **Name**: name of restriction enzyme
+-   **Prototype**: prototype of restriction enzyme
+-   **RecognitionSeq**: enzyme's recognition sequence with cleavage pattern(s)
 
 To load and explore the dataset:
 
-```r
+``` r
 data("Enzymes", package = "REDesignR")
 
 # View documentation
 ?REDesignR::Enzymes
 
 # View structure
-str(Enzymes)
+str(REDesignR::Enzymes)
 
 # First few rows
-head(Enzymes)
-
+head(REDesignR::Enzymes)
 ```
+
+## 2. Load data
+
+For demonstration, we use a simple DNA sequence and subset from the included restriction enzyme database.
+
+```{r}
+sequence <- Biostrings::DNAString(
+  "AGCGTGAATTCGCGGCCGATCGATCGGCCGCGGATCCGATCGATGCTTAGCATGCGGCCGCAATTCGATCGATCGG"
+)
+sequence
+
+data("Enzymes", package = "REDesignR")
+enzymes <- REDesignR::Enzymes[c(1,4),]
+enzymes
+```
+
+------------------------------------------------------------------------
+
+## 3. Simulating Co-Digestion
+
+`simulateCoDigest()` simulates a co-digestion experiment given a DNA sequence and the recognition sequences of 2 restriction enzymes.
+
+```{r}
+codigestResult <- simulateCoDigest(
+  dnaSeq = sequence,
+  enzymes = enzymes
+)
+
+codigestResult
+```
+
+### Output structure
+
+`codigestResult` includes:
+
+-   `$digestDf`: a tibble of predicted fragments, fragment metadata, and corresponding enzyme(s) that resulting in the predicted set of fragments
+-   `$isCoDigest`: a boolean to indicate if the predicted fragments resulted from a single-digest or a co-digest
+
+------------------------------------------------------------------------
+
+## 4. Visualizing Restriction Maps
+
+`plotRestrictionMap()` generates a restriction map of digested fragments in relative positions along the genome, with the option to display fragment lengths over top.
+
+```{r, echo=FALSE}
+# by default: multiDigest = TRUE, showLengths = TRUE
+plotRestrictionMap(codigestResult$digestDf)
+```
+
+This visualization is especially useful when designing cloning strategies or designing plasmid constructs. It can be used to visualize the optimal choice of enzyme(s) to procure the desired fragments
+
+------------------------------------------------------------------------
+
+## 5. Simulating Gel Electrophoresis
+
+`simulateGel()` generates a synthetic agarose gel diagram using digested fragment sizes, with the option to display fragment IDs.
+
+```{r, echo=FALSE}
+# by default, multiDigest = TRUE, labelFragments = FALSE
+simulateGel(codigestResult$digestDf)
+```
+
+### Interpreting the gel
+
+The simulated gel displays:
+
+-   A labelled size ladder on the left to reference fragment size
+-   Bands corresponding to predicted fragment sizes from corresponding digest
+-   If co-digestion occurred, both single-digests and the co-digest is displayed in a side-by-side comparison to aid in optimizing restriction enzyme(s) choice for desired fragmentation outcomes
+
+------------------------------------------------------------------------
+
+## 6. End-to-End Workflow
+
+Below is a full pipeline combining all features of the package. It is recommended that first-time users try this workflow first, before trying alternate workflows:
+
+``` r
+library("REDesignR")
+data("Enzymes", package = "REDesignR")
+
+sequence <- Biostrings::DNAString(
+  "AGCGTGAATTCGCGGCCGATCGATCGGCCGCGGATCCGATCGATGCTTAGCATGCGGCCGCAATTCGATCGATCGG"
+)
+
+enzymes <- REDesignR::Enzymes[c(1,4),]
+
+
+# 1. Simulate digestion experiment
+codigestResult <- simulateCoDigest(
+  dnaSeq = sequence,
+  enzymes = enzymes
+)
+
+# 2. View Restriction map
+plotRestrictionMap(codigestResult$digestDf)
+
+# 3. View Gel simulation
+simulateGel(codigestResult$digestDf)
+```
+
+------------------------------------------------------------------------
+
+## Launching the REDesignR Shiny Application
+
+*REDesignR* includes an interactive Shiny app that provides a graphical interface for restriction enzyme exploration, digestion planning, and visualization. You can launch the app with:
+
+``` r
+REDesignR::runREDesignR()
+```
+
+The Shiny app could be useful for initial exploration of this tool or for those less familiar with R programming.
 
 ## Cite this package
 
 If you use any functions from this package, please cite:
 
-> Cheng, C. (2025) REDesignR: A tool to optimize restriction enzyme experiments.
-  Unpublished. URL https://github.com/christinecheng1229/REDesignR.
-  
+> Cheng, C. (2025) *REDesignR: Restriction Enzyme Digests Simulation and Visualization* Unpublished. URL <https://github.com/christinecheng1229/REDesignR>.
+
 ## References
 
+-   Chang W, Cheng J, Allaire J, Sievert C, Schloerke B, Xie Y, Allen J, McPherson J, Dipert A, Borges B (2025). *shiny: Web Application Framework for R*. <doi:10.32614/CRAN.package.shiny> <https://doi.org/10.32614/CRAN.package.shiny>, R package version 1.11.1, <https://CRAN.R-project.org/package=shiny>.
+-   Grolemund, G. (2015). _Learn Shiny - Video Tutorials._ https://shiny.rstudio.com/tutorial/
+-   Müller K, Wickham H (2025). *tibble: Simple Data Frames*. <doi:10.32614/CRAN.package.tibble> <https://doi.org/10.32614/CRAN.package.tibble>, R package version 3.3.0, <https://CRAN.R-project.org/package=tibble>.
+-   _NEBcutter 3.0._ (n.d.). Nc3.Neb.com. https://nc3.neb.com/NEBcutter/prj/.
+-   OpenAI. (2025). *ChatGPT (GPT-5.1)* [Large language model]. <https://openai.com/chatgpt>
+-   Pagès H, Aboyoun P, Gentleman R, DebRoy S (2025). *Biostrings: Efficient manipulation of biological strings*. <doi:10.18129/B9.bioc.Biostrings> <https://doi.org/10.18129/B9.bioc.Biostrings>, R package version 2.78.0, <https://bioconductor.org/packages/Biostrings>.
+-   Pedersen T (2025). *patchwork: The Composer of Plots.* R package version 1.3.2.9000, <https://patchwork.data-imaginist.com>.
+-   R Core Team (2025). *R: A Language and Environment for Statistical Computing*. R Foundation for Statistical Computing, Vienna, Austria. <https://www.R-project.org/>.
+-   Roberts, R.J., Vincze, T., Posfai, J., Macelis, D (2015). *REBASE-a database for DNA restriction and modification: enzymes, genes and genomes*. Nucleic Acids Res. 43: D298-D299.
+-   _Shiny - File Download. (2014, July 29)._ Shiny. https://shiny.posit.co/r/gallery/widgets/file-download/‌
+-   _Shiny - File Upload._ (2014, July 29). Shiny. https://shiny.posit.co/r/gallery/widgets/file-upload/‌
 
+-   Wickham, H. (2016). *ggplot2: Elegant Graphics for Data Analysis.* Springer-Verlag New York. ISBN: 978-3-319-24277-4.
+-   Wickham H, François R, Henry L, Müller K, Vaughan D (2023). *dplyr: A Grammar of Data Manipulation*. <doi:10.32614/CRAN.package.dplyr> <https://doi.org/10.32614/CRAN.package.dplyr>, R package version 1.1.4, <https://CRAN.R-project.org/package=dplyr>.
+-   Wickham H, Pedersen T, Seidel D (2025). *scales: Scale Functions for Visualization.* R package version 1.4.0, <https://scales.r-lib.org>.
+-   Wright ES (2024). “Fast and Flexible Search for Homologous Biological Sequences with DECIPHER v3.” *The R Journal*, *16*(2), 191-200.
+-   Zhu LJ, Li J, Fazzio T (2025). _REDseq: Analysis of high-throughput sequencing data processed by restriction enzyme digestion._ doi:10.18129/B9.bioc.REDseq, R package version 1.56.0, https://bioconductor.org/packages/REDseq.
 
 ## Session Info
 

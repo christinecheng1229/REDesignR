@@ -11,7 +11,9 @@ No return value but opens up a Shiny app.
 }
 \description{
 A function that launches the Shiny app for REDesignR.
-The purpose of this app is to \link{...} The code of the app has been placed in \code{./inst/shiny-scripts}.
+The purpose of this app is to simulate restriction enzyme co-digestion and
+generate restriction maps and gel simulations to aid in digestion experiment
+design optimization. The code of the app has been placed in \code{./inst/shiny-scripts}.
 }
 \examples{
 \dontrun{
@@ -21,5 +23,12 @@ REDesignR::runREDesignR()
 
 }
 \references{
-Grolemund, G. (2015). Learn Shiny - Video Tutorials. \href{https://shiny.rstudio.com/tutorial/}{Link}
+Grolemund, G. (2015). \emph{Learn Shiny - Video Tutorials.}
+https://shiny.rstudio.com/tutorial/
+
+\emph{Shiny - File Download}. (2014, July 29). Shiny.
+https://shiny.posit.co/r/gallery/widgets/file-download/‌
+
+\emph{Shiny - File Upload.} (2014, July 29). Shiny.
+https://shiny.posit.co/r/gallery/widgets/file-upload/‌
 }
